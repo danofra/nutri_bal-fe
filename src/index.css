@@ -106,7 +106,25 @@ a {
     rgba(0, 0, 0, 0)
   );
 }
-
+/* HOME */
+#custom-img {
+  background-color: green;
+  color: white;
+  width: auto;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#custom-img-featured {
+  background-color: #76abae;
+  color: white;
+  width: auto;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 /* BUTTON */
 
 .custom-button-primary {

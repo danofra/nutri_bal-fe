@@ -64,7 +64,7 @@ function NavbarComponent() {
             <Offcanvas.Body>
               <div className="menu-container">
                 <div className="menu-item">
-                  <Link to="/piramidealimentare" onClick={handleClose}>
+                  <Link to="/foodpyramid" onClick={handleClose}>
                     <span>Piramide Alimentare</span>
                   </Link>
                 </div>
