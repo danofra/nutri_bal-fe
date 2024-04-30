@@ -150,7 +150,7 @@ function NavbarComponent() {
             </h1>
           </Link>
           <Link
-            to="/cestodellaspesa"
+            to="/shoppingbasket"
             className={`navbar-brand link-navbar ${
               selectedIcon === "basket" ? "selected" : ""
             }`}
