@@ -16,7 +16,7 @@ function LoginComponent() {
     <>
       <Nav onClick={handleShow} id="pm-none">
         <h1>
-          <i className="bi bi-person-circle me-2"></i>
+          <i className="bi bi-person-circle"></i>
         </h1>
       </Nav>
       <Modal show={show} onHide={handleClose}>

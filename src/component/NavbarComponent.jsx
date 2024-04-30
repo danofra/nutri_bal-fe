@@ -29,8 +29,13 @@ function NavbarComponent() {
     setShowRicettarioSubMenu(!showRicettarioSubMenu);
     setShowAlimentiSubMenu(false);
   };
-  const handleIconClick = (icon) => {
-    setSelectedIcon(icon);
+  const handleIconClick = (iconName) => {
+    setSelectedIcon(iconName === selectedIcon ? null : iconName);
+    setSelectedIcon(iconName);
+  };
+  const handleLoginClick = () => {
+    setShowLoginModal(true);
+    setSelectedIcon(null);
   };
 
   return (
@@ -45,7 +50,7 @@ function NavbarComponent() {
         <Container>
           <Link onClick={handleShow} className="navbar-brand link-navbar">
             <h1>
-              <i className="bi bi-list ms-2"></i>
+              <i className="bi bi-list"></i>
             </h1>
           </Link>
           <Offcanvas
@@ -135,7 +140,10 @@ function NavbarComponent() {
             className={`navbar-brand link-navbar ${
               selectedIcon === "home" ? "selected" : ""
             }`}
-            onClick={() => handleIconClick("home")}
+            onClick={() => {
+              handleIconClick("home");
+              setShowLoginModal(false);
+            }}
           >
             <h1>
               <i className="bi bi-house"></i>
@@ -146,7 +154,10 @@ function NavbarComponent() {
             className={`navbar-brand link-navbar ${
               selectedIcon === "basket" ? "selected" : ""
             }`}
-            onClick={() => handleIconClick("basket")}
+            onClick={() => {
+              handleIconClick("basket");
+              setShowLoginModal(false);
+            }}
           >
             <h1>
               <i className="bi bi-basket3"></i>
@@ -156,8 +167,9 @@ function NavbarComponent() {
             href="#"
             onClick={(e) => {
               e.preventDefault();
+              handleLoginClick();
             }}
-            className="link-navbar"
+            className={`link-navbar ${showLoginModal ? "selected" : ""}`}
           >
             <LoginComponent
               show={showLoginModal}
