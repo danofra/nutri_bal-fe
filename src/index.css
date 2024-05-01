@@ -117,13 +117,13 @@ a {
   background-color: green;
   color: white;
   width: auto;
-  height: 400px;
+  height: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 #custom-img-featured {
-  background-color: #76abae;
+  background-color: green;
   color: white;
   width: auto;
   height: 100%;
