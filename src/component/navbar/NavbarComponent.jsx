@@ -1,6 +1,6 @@
 // IMPORT COMPONENT
 
-import LoginComponent from "./LoginComponent";
+import LoginComponent from "../login/LoginComponent";
 
 // IMPORT BOOTSTRAP E ICONS
 
@@ -13,7 +13,6 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 function NavbarComponent() {
-
   // USESTATE INITIALIZATION
 
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -182,8 +181,7 @@ function NavbarComponent() {
           >
             <LoginComponent
               show={showLoginModal}
-              handleClose={() => setShowLoginModal(false)
-              }
+              handleClose={() => setShowLoginModal(false)}
             />
           </Navbar.Brand>
         </Container>

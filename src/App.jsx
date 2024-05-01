@@ -1,16 +1,16 @@
 import "./App.css";
-import NavbarComponent from "./component/NavbarComponent.jsx";
+import NavbarComponent from "./component/navbar/NavbarComponent.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import ContactnavComponent from "./component/ContactnavComponent.jsx";
+import ContactnavComponent from "./component/navbar/ContactnavComponent.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SinginComponent from "./component/SinginComponent.jsx";
+import SinginComponent from "./component/login/SinginComponent.jsx";
 import HomeComponent from "./component/home/HomeComponent.jsx";
 import ShoppingbasketComponent from "./component/shopping_basket/ShoppingbasketComponent.jsx";
 import FoodstorageComponent from "./component/shopping_basket/FoodstorageComponent.jsx";
 import ShoppinglistComponent from "./component/shopping_basket/ShoppinglistComponent.jsx";
-import CalendarComponent from "./component/CalendarComponent.jsx";
-import FoodpyramidComponent from "./component/FoodpyramidComponent.jsx";
+import CalendarComponent from "./component/calendar/CalendarComponent.jsx";
+import FoodpyramidComponent from "./component/listmenu/FoodpyramidComponent.jsx";
 
 function App() {
   return (
@@ -29,10 +29,7 @@ function App() {
               element={<ShoppingbasketComponent />}
             />
             <Route path="/foodstorage" element={<FoodstorageComponent />} />
-            <Route
-              path="/shoppinglist"
-              element={<ShoppinglistComponent />}
-            />
+            <Route path="/shoppinglist" element={<ShoppinglistComponent />} />
             <Route path="/calendar" element={<CalendarComponent />} />
             <Route path="/foodpyramid" element={<FoodpyramidComponent />} />
           </Routes>

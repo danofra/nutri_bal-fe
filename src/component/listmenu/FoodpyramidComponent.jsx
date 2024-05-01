@@ -1,5 +1,5 @@
 import { Col, Container, Image, Row } from "react-bootstrap";
-import food_pyramid from "../assets/piramide_alimentare.jpeg";
+import food_pyramid from "../../assets/piramide_alimentare.jpeg";
 
 function PiramidealimentareComponent() {
   return (
