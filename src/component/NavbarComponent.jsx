@@ -1,20 +1,29 @@
 // IMPORT COMPONENT
+
 import LoginComponent from "./LoginComponent";
+
 // IMPORT BOOTSTRAP E ICONS
+
 import { Container, Navbar, Offcanvas } from "react-bootstrap";
 import { BiCaretRight } from "react-icons/bi";
+
 // IMPORT REACT
+
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
 function NavbarComponent() {
+
   // USESTATE INITIALIZATION
+
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [show, setShow] = useState(false);
   const [showAlimentiSubMenu, setShowAlimentiSubMenu] = useState(false);
   const [showRicettarioSubMenu, setShowRicettarioSubMenu] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState(null);
+
   // FUNCTION TO OPEN MODAL AND OFFCANVAS
+
   const handleShow = () => setShow(true);
   const handleClose = () => {
     setShow(false);
@@ -173,7 +182,8 @@ function NavbarComponent() {
           >
             <LoginComponent
               show={showLoginModal}
-              handleClose={() => setShowLoginModal(false)}
+              handleClose={() => setShowLoginModal(false)
+              }
             />
           </Navbar.Brand>
         </Container>

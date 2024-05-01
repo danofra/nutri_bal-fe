@@ -1,6 +1,9 @@
 /* FONT */
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 /* GENERAL */
+
 html {
   scroll-behavior: smooth;
   margin-bottom: 100px;
@@ -33,6 +36,7 @@ pm-none {
 }
 
 /* NAVBAR */
+
 a > .navbar-brand {
   margin-right: 0;
 }
@@ -106,7 +110,9 @@ a {
     rgba(0, 0, 0, 0)
   );
 }
+
 /* HOME */
+
 #custom-img {
   background-color: green;
   color: white;
@@ -125,6 +131,39 @@ a {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+/* CALENDAR */
+
+.calendar-container {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.select-container {
+  margin-bottom: 20px;
+}
+.month-select,
+.year-select {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+}
+.day-container {
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.472);
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.day {
+  font-size: 18px;
+  font-weight: bold;
+}
+.day-of-week {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
 /* BUTTON */
 
 .custom-button-primary {
@@ -148,7 +187,6 @@ a {
 .custom-button-primary:active {
   background-color: greenyellow !important;
 }
-
 .custom-button-secondary {
   text-align: center;
   padding: 10px 20px;
@@ -169,7 +207,6 @@ a {
 .custom-button-secondary:active {
   background-color: #621010 !important;
 }
-
 .custom-button-ter {
   font-size: 20px;
   color: black;
@@ -186,13 +223,35 @@ a {
 .custom-button-ter:active {
   background-color: transparent !important;
 }
-
 .custom-checkbox .form-check-input:checked {
   background-color: yellowgreen;
   border-color: yellowgreen;
 }
 
+/* MODAL */
+
+.modal-content {
+  border-radius: 10px;
+}
+.modal-header {
+  background-color: yellowgreen;
+  color: #fff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.modal-footer {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.modal-footer button {
+  border-radius: 5px;
+}
+.modal-body {
+  padding: 20px;
+}
+
 /* SINGIN */
+
 .singin-container {
   background-color: #f8f9fa;
   padding: 10px;
