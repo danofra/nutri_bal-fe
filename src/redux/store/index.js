@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import foodstorage from "../reducers/foodstorage";
+import foodItem from "../reducers/foodItem";
 
 const globalReducers = combineReducers({
-  favorites: foodstorage,
+  favorites: foodItem,
 });
 
 const store = configureStore({

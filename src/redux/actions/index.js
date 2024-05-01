@@ -1,14 +1,13 @@
-export const ADD_TO_FOODSTORAGE = "ADD_TO_FOODSTORAGE";
-export const REMOVE_TO_FOODSTORAGE = "REMOVE_TO_FOODSTORAGE";
-export const UPDATE_FOODSTORAGE = "UPDATE_FOODSTORAGE";
+export const ADD_TO_FOODITEM = "ADD_TO_FOODITEM";
+export const REMOVE_TO_FOODITEM = "REMOVE_TO_FOODITEM";
+export const UPDATE_FOODITEM = "UPDATE_FOODITEM";
 
-export const addToFoodstorage = (element) => {
-  return { type: ADD_TO_FOODSTORAGE, payload: element };
+export const addToFooditem = (element) => {
+  return { type: ADD_TO_FOODITEM, payload: element };
 };
-
-export const removeToFoodstorage = (element) => {
-  return { type: REMOVE_TO_FOODSTORAGE, payload: element };
+export const removeToFooditem = (element) => {
+  return { type: REMOVE_TO_FOODITEM, payload: element };
 };
-export const updateFoodstorage = (updatedFoodstorageItems) => {
-  return { type: UPDATE_FOODSTORAGE, payload: updatedFoodstorageItems };
+export const updateFooditem = (updatedFooditemItems) => {
+  return { type: UPDATE_FOODITEM, payload: updatedFooditemItems };
 };

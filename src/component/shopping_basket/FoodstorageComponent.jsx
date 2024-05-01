@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Col, Card, Button, Modal } from "react-bootstrap";
-import {
-  updateFoodstorage,
-  removeToFoodstorage,
-} from "../../redux/actions/index";
+import { updateFooditem, removeToFooditem } from "../../redux/actions/index";
 
 function FoodstorageComponent() {
-  const foodstorageItems = useSelector((state) => state.favorites.content);
+  const fooditemItems = useSelector((state) => state.favorites.content);
   const dispatch = useDispatch();
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [itemToRemove, setItemToRemove] = useState(null);
@@ -16,16 +13,16 @@ function FoodstorageComponent() {
 
   const handleEditQuantity = () => {
     if (editedItem && newQuantity >= 0) {
-      const index = foodstorageItems.findIndex(
+      const index = fooditemItems.findIndex(
         (item) => item.id === editedItem.id
       );
       if (index !== -1) {
-        const updatedFoodstorageItems = [...foodstorageItems];
-        updatedFoodstorageItems[index] = {
+        const updatedFooditemItems = [...fooditemItems];
+        updatedFooditemItems[index] = {
           ...editedItem,
           quantity: newQuantity,
         };
-        dispatch(updateFoodstorage(updatedFoodstorageItems));
+        dispatch(updateFooditem(updatedFooditemItems));
       }
       setEditedItem(null);
       setNewQuantity(1);
@@ -39,7 +36,7 @@ function FoodstorageComponent() {
 
   const handleConfirmDelete = () => {
     if (itemToRemove) {
-      dispatch(removeToFoodstorage(itemToRemove));
+      dispatch(removeToFooditem(itemToRemove));
       setShowConfirmationModal(false);
     }
   };
@@ -55,7 +52,7 @@ function FoodstorageComponent() {
         <Row className="mt-3">
           <h3 className="text-center">Dispensa</h3>
           <Col>
-            {foodstorageItems.map((item, index) => (
+            {fooditemItems.map((item, index) => (
               <Card key={index} className="mb-1">
                 <Card.Body>{item.name}</Card.Body>
                 <Card.Footer>

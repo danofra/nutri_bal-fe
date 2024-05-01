@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Container, Row, Col, Form, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { addToFoodstorage, updateFoodstorage } from "../../redux/actions/index";
+import { addToFooditem, updateFooditem } from "../../redux/actions/index";
 
 function ShoppinglistComponent() {
   const [items, setItems] = useState([]);
@@ -11,7 +11,7 @@ function ShoppinglistComponent() {
   const [newQuantity, setNewQuantity] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-  const foodstorageItems = useSelector((state) => state.favorites.content);
+  const fooditemItems = useSelector((state) => state.favorites.content);
   const dispatch = useDispatch();
   const handleAddItem = () => {
     if (newItemName.trim() !== "") {
@@ -52,26 +52,25 @@ function ShoppinglistComponent() {
     updatedItems[index].checked = !updatedItems[index].checked;
     setItems(updatedItems);
   };
-  const handleTransferToFoodstorage = () => {
+  const handleTransferToFooditem = () => {
     const selectedItems = items.filter((item) => item.checked);
     selectedItems.forEach((item) => {
       const normalizedItemName = item.name.toLowerCase();
-      const existingItem = foodstorageItems.find(
-        (foodstorageItem) =>
-          foodstorageItem.name.toLowerCase() === normalizedItemName
+      const existingItem = fooditemItems.find(
+        (fooditemItem) => fooditemItem.name.toLowerCase() === normalizedItemName
       );
       if (existingItem) {
         const updatedQuantity = existingItem.quantity + item.quantity;
         dispatch(
-          updateFoodstorage([
-            ...foodstorageItems.filter(
-              (foodstorageItem) => foodstorageItem !== existingItem
+          updateFooditem([
+            ...fooditemItems.filter(
+              (fooditemItem) => fooditemItem !== existingItem
             ),
             { ...existingItem, quantity: updatedQuantity },
           ])
         );
       } else {
-        dispatch(addToFoodstorage({ ...item, name: normalizedItemName }));
+        dispatch(addToFooditem({ ...item, name: normalizedItemName }));
       }
     });
     const remainingItems = items.filter((item) => !item.checked);
@@ -167,7 +166,7 @@ function ShoppinglistComponent() {
           <Col>
             <Button
               className="custom-button-primary"
-              onClick={handleTransferToFoodstorage}
+              onClick={handleTransferToFooditem}
             >
               Trasferisci alla dispensa
             </Button>
