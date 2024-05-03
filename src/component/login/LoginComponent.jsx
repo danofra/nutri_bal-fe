@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
+import { login } from "../../data/login";
 import { Link } from "react-router-dom";
 
 function LoginComponent() {
@@ -11,6 +12,15 @@ function LoginComponent() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login(email, password);
+    handleClose();
+  };
 
   return (
     <>
@@ -33,6 +43,7 @@ function LoginComponent() {
               <Form.Control
                 type="email"
                 placeholder="Inserisci la tua email"
+                onChange={(e) => setEmail(e.target.value)}
                 autoFocus
                 required
               />
@@ -45,6 +56,7 @@ function LoginComponent() {
               <Form.Control
                 type="password"
                 placeholder="Inserisci la tua passaword"
+                onChange={(e) => setPassword(e.target.value)}
                 autoFocus
                 required
               />
@@ -61,7 +73,7 @@ function LoginComponent() {
         </Modal.Body>
         <Modal.Footer>
           <Row className="w-100">
-            <Button className="custom-button-primary" onClick={handleClose}>
+            <Button className="custom-button-primary" onClick={handleSubmit}>
               Accedi
             </Button>
           </Row>

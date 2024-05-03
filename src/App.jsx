@@ -1,9 +1,16 @@
-import "./App.css";
-import NavbarComponent from "./component/navbar/NavbarComponent.jsx";
+/* IMPORT REACT ROUTER */
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+/* IMPORT BOOTSTRAP */
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* IMPORT COMPONENT */
+
+import NavbarComponent from "./component/navbar/NavbarComponent.jsx";
 import ContactnavComponent from "./component/navbar/ContactnavComponent.jsx";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SinginComponent from "./component/login/SinginComponent.jsx";
 import HomeComponent from "./component/home/HomeComponent.jsx";
 import ShoppingbasketComponent from "./component/shopping_basket/ShoppingbasketComponent.jsx";

@@ -1,19 +1,21 @@
 import { Container, Form, Row, Col, Button, FormCheck } from "react-bootstrap";
+import { singin } from "../../data/singin";
 import { useState } from "react";
 
 function SinginComponent() {
   const initialState = {
-    nome: "",
-    cognome: "",
+    name: "",
+    surname: "",
     email: "",
     password: "",
-    dataDiNascita: "",
-    sesso: "",
-    attivitaFisica: "",
-    nazionalita: "",
-    comune: "",
+    date_of_birth: "",
+    gender: "",
+    physical_activity: "",
+    nationality: "",
+    city_of_residence: "",
     robot: false,
   };
+
   const [formData, setFormData] = useState(initialState);
 
   const handleChange = (e) => {
@@ -26,7 +28,18 @@ function SinginComponent() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    singin(
+      formData.name,
+      formData.surname,
+      formData.email,
+      formData.password,
+      formData.date_of_birth,
+      formData.gender.toUpperCase(),
+      formData.physical_activity.toUpperCase(),
+      formData.nationality,
+      formData.city_of_residence,
+      formData.robot
+    );
     setFormData(initialState);
   };
   return (
@@ -37,23 +50,23 @@ function SinginComponent() {
         </div>
         <Form onSubmit={handleSubmit}>
           <Row className="mt-5">
-            <Form.Group as={Col} controlId="nome">
+            <Form.Group as={Col} controlId="name">
               <Form.Label>Nome*:</Form.Label>
               <Form.Control
                 type="text"
-                name="nome"
-                value={formData.nome}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 placeholder="Inserisci il tuo nome"
                 required
               />
             </Form.Group>
-            <Form.Group as={Col} controlId="cognome">
+            <Form.Group as={Col} controlId="surname">
               <Form.Label>Cognome*:</Form.Label>
               <Form.Control
                 type="text"
-                name="cognome"
-                value={formData.cognome}
+                name="surname"
+                value={formData.surname}
                 onChange={handleChange}
                 placeholder="Inserisci il tuo cognome"
                 required
@@ -87,23 +100,23 @@ function SinginComponent() {
             </Form.Group>
           </Row>
           <Row className="mt-3">
-            <Form.Group as={Col} controlId="dataDiNascita">
+            <Form.Group as={Col} controlId="date_of_birth">
               <Form.Label>Data di nascita*:</Form.Label>
               <Form.Control
                 type="date"
-                name="dataDiNascita"
-                value={formData.dataDiNascita}
+                name="date_of_birth"
+                value={formData.date_of_birth}
                 onChange={handleChange}
                 placeholder="Inserisci la tua età"
                 required
               />
             </Form.Group>
-            <Form.Group as={Col} controlId="sesso">
+            <Form.Group as={Col} controlId="gender">
               <Form.Label>Genere*:</Form.Label>
               <Form.Control
                 as="select"
-                name="sesso"
-                value={formData.sesso}
+                name="gender"
+                value={formData.gender}
                 onChange={handleChange}
                 placeholder="Inserisci la tua età"
                 required
@@ -116,40 +129,40 @@ function SinginComponent() {
             </Form.Group>
           </Row>
           <Row className="mt-3">
-            <Form.Group as={Col} controlId="attivitaFisica">
+            <Form.Group as={Col} controlId="physical_activity">
               <Form.Label>Attività fisica*:</Form.Label>
               <Form.Control
                 as="select"
-                name="attivitaFisica"
-                value={formData.attivitaFisica}
+                name="physical_activity"
+                value={formData.physical_activity}
                 onChange={handleChange}
                 placeholder="Inserisci la tua attività fisica"
                 required
               >
                 <option value="">Seleziona il livello di attività</option>
                 <option value="sedentary">Sedentario</option>
-                <option value="moderatelyActive">Moderatamente Attivo</option>
+                <option value="moderately_Active">Moderatamente Attivo</option>
                 <option value="active">Attivo</option>
               </Form.Control>
             </Form.Group>
           </Row>
           <Row className="mt-3">
-            <Form.Group as={Col} controlId="nazionalita">
+            <Form.Group as={Col} controlId="nationality">
               <Form.Label>Nazionalità:</Form.Label>
               <Form.Control
                 type="text"
-                name="nazionalita"
-                value={formData.nazionalita}
+                name="nationality"
+                value={formData.nationality}
                 onChange={handleChange}
                 placeholder="Inserisci il tuo nazionalità"
               />
             </Form.Group>
-            <Form.Group as={Col} controlId="comune">
+            <Form.Group as={Col} controlId="city_of_residence">
               <Form.Label>Comune di residenza:</Form.Label>
               <Form.Control
                 type="text"
-                name="comune"
-                value={formData.comune}
+                name="city_of_residence"
+                value={formData.city_of_residence}
                 onChange={handleChange}
                 placeholder="Inserisci il tuo comune di residenza"
               />
