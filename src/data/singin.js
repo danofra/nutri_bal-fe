@@ -32,7 +32,7 @@ export const singin = (
       if (response.ok) {
         return response.json();
       } else {
-        throw new Error(response.body);
+        throw new Error("Errore durante la registrazione!");
       }
     })
     .then((data) => {
@@ -49,7 +49,6 @@ export const singin = (
       console.log(data);
     })
     .catch((error) => {
-      console.log(error);
-      alert(error);
+      throw new Error(error.message);
     });
 };

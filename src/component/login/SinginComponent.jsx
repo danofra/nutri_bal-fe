@@ -1,6 +1,17 @@
-import { Container, Form, Row, Col, Button, FormCheck } from "react-bootstrap";
+import {
+  Container,
+  Form,
+  Row,
+  Col,
+  Button,
+  FormCheck,
+  Modal,
+  Spinner,
+} from "react-bootstrap";
 import { singin } from "../../data/singin";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import LoginComponent from "./LoginComponent";
 
 function SinginComponent() {
   const initialState = {
@@ -17,6 +28,11 @@ function SinginComponent() {
   };
 
   const [formData, setFormData] = useState(initialState);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,24 +42,65 @@ function SinginComponent() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    singin(
-      formData.name,
-      formData.surname,
-      formData.email,
-      formData.password,
-      formData.date_of_birth,
-      formData.gender.toUpperCase(),
-      formData.physical_activity.toUpperCase(),
-      formData.nationality,
-      formData.city_of_residence,
-      formData.robot
-    );
-    setFormData(initialState);
+    setIsLoading(true);
+    setShowSuccessModal(false);
+    setShowErrorModal(false);
+    setError(null);
+
+    try {
+      await singin(
+        formData.name,
+        formData.surname,
+        formData.email,
+        formData.password,
+        formData.date_of_birth,
+        formData.gender.toUpperCase(),
+        formData.physical_activity.toUpperCase(),
+        formData.nationality,
+        formData.city_of_residence,
+        formData.robot
+      );
+      setFormData(initialState);
+      setShowSuccessModal(true);
+    } catch (err) {
+      setError(err.message);
+      setShowErrorModal(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  const handleSuccessModal = () => {
+    setShowSuccessModal(false);
+    navigate("/login");
+  };
+
+  const handleErrorModal = () => {
+    setShowErrorModal(false);
+    navigate("/");
+  };
+
   return (
     <>
+      <Modal show={showSuccessModal} onHide={handleSuccessModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Successo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Registrazione avvenuta con successo!
+          <LoginComponent />
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showErrorModal} onHide={handleErrorModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Errore</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{error}</Modal.Body>
+      </Modal>
+
       <Container className="mt-5 singin-container">
         <div className="text-center">
           <h2>Registrazione</h2>
@@ -180,14 +237,20 @@ function SinginComponent() {
               />
             </Form.Group>
           </Row>
-          <Row className="mt-3 w-75 mx-auto">
-            <Button
-              className="custom-button-primary text-center mt-3"
-              type="submit"
-              onClick={handleSubmit}
-            >
-              Registrati
-            </Button>
+          <Row className="mt-3 w-75 mx-auto d-flex justify-content-center">
+            {isLoading ? (
+              <div className="d-flex justify-content-center align-items-center">
+                <Spinner animation="border" variant="success" />
+              </div>
+            ) : (
+              <Button
+                className="custom-button-primary text-center mt-3"
+                type="submit"
+                onClick={handleSubmit}
+              >
+                Registrati
+              </Button>
+            )}
           </Row>
         </Form>
       </Container>

@@ -10,7 +10,7 @@ export const login = (email, password) => {
       if (response.ok) {
         return response.json();
       } else {
-        throw new Error(response.body);
+        throw new Error("Errore durante l'accesso!");
       }
     })
     .then((data) => {
@@ -18,6 +18,6 @@ export const login = (email, password) => {
     })
     .catch((error) => {
       console.log(error);
-      alert(error);
+      throw new Error(error.message);
     });
 };
