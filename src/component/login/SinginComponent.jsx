@@ -113,7 +113,7 @@ function SinginComponent() {
         <Modal.Body>{error}</Modal.Body>
       </Modal>
 
-      <Container className="mt-5 singin-container">
+      <Container className="mt-5 log-container">
         <div className="text-center">
           <h2>Registrazione</h2>
         </div>

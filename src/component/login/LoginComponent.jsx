@@ -53,7 +53,7 @@ function LoginComponent() {
         <Modal.Body>{error}</Modal.Body>
       </Modal>
 
-      <Container>
+      <Container className="mt-5 log-container">
         <Row className="justify-content-center">
           <Col md={6}>
             <h2 className="text-center mb-4">Accedi</h2>
@@ -82,7 +82,9 @@ function LoginComponent() {
               <div className="text-center mb-3">
                 <p>
                   Non fai ancora parte della nostra community?{" "}
-                  <Link to="/singin">Registrati.</Link>
+                  <Link to="/singin">
+                    <strong>Registrati.</strong>
+                  </Link>
                 </p>
               </div>
               <div className="d-grid gap-2">
@@ -91,13 +93,16 @@ function LoginComponent() {
                 ) : (
                   <>
                     <Button
-                      variant="primary"
                       onClick={handleSubmit}
-                      className="mb-2"
+                      className="custom-button-primary mb-2"
                     >
                       Accedi
                     </Button>
-                    <Button variant="secondary" as={Link} to="/">
+                    <Button
+                      as={Link}
+                      to="/"
+                      className="custom-button-secondary"
+                    >
                       Esci
                     </Button>
                   </>
