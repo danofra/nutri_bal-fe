@@ -81,15 +81,17 @@ function LoginComponent() {
               </Form.Group>
               <div className="text-center mb-3">
                 <p>
-                  Non fai ancora parte della nostra community?{" "}
+                  Non fai ancora parte della nostra community?
                   <Link to="/singin">
-                    <strong>Registrati.</strong>
+                    <strong> Registrati.</strong>
                   </Link>
                 </p>
               </div>
               <div className="d-grid gap-2">
                 {isLoading ? (
-                  <Spinner animation="border" variant="primary" />
+                  <div className="d-flex justify-content-center align-items-center">
+                    <Spinner animation="border" className="spinner" />
+                  </div>
                 ) : (
                   <>
                     <Button

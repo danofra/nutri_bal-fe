@@ -252,7 +252,7 @@ function SinginComponent() {
           <Row className="mt-3 w-75 mx-auto d-flex justify-content-center">
             {isLoading ? (
               <div className="d-flex justify-content-center align-items-center">
-                <Spinner animation="border" variant="success" />
+                <Spinner animation="border" className="spinner" />
               </div>
             ) : (
               <Button

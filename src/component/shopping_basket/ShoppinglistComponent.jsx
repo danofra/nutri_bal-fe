@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Button, Container, Row, Col, Form, Modal } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  Form,
+  Modal,
+  Spinner,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { addToFooditem, updateFooditem } from "../../redux/actions/index";
 
@@ -11,6 +19,7 @@ function ShoppinglistComponent() {
   const [newQuantity, setNewQuantity] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const fooditemItems = useSelector((state) => state.favorites.content);
   const dispatch = useDispatch();
   const handleAddItem = () => {
@@ -75,6 +84,7 @@ function ShoppinglistComponent() {
     });
     const remainingItems = items.filter((item) => !item.checked);
     setItems(remainingItems);
+    setIsLoading(false);
   };
 
   const handleShowDeleteModal = (item) => {
@@ -164,12 +174,18 @@ function ShoppinglistComponent() {
         </Row>
         <Row className=" text-center mt-3">
           <Col>
-            <Button
-              className="custom-button-primary"
-              onClick={handleTransferToFooditem}
-            >
-              Trasferisci alla dispensa
-            </Button>
+            {isLoading ? (
+              <div className="d-flex justify-content-center align-items-center">
+                <Spinner animation="border" className="spinner" />
+              </div>
+            ) : (
+              <Button
+                className="custom-button-primary"
+                onClick={handleTransferToFooditem}
+              >
+                Trasferisci alla dispensa
+              </Button>
+            )}
           </Col>
         </Row>
       </Container>
