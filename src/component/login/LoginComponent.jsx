@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Modal, Button } from "react-bootstrap";
 import { login } from "../../data/login/login";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
+import NavbarComponent from "../navbar/NavbarComponent";
 
 function LoginComponent() {
   const navigate = useNavigate();
