@@ -18,6 +18,7 @@ import FoodstorageComponent from "./component/shopping_basket/FoodstorageCompone
 import ShoppinglistComponent from "./component/shopping_basket/ShoppinglistComponent.jsx";
 import CalendarComponent from "./component/calendar/CalendarComponent.jsx";
 import FoodpyramidComponent from "./component/listmenu/FoodpyramidComponent.jsx";
+import LoginComponent from "./component/login/LoginComponent.jsx";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomeComponent />} />
             <Route path="/singin" element={<SinginComponent />} />
+            <Route path="/login" element={<LoginComponent />} />
             <Route
               path="/shoppingbasket"
               element={<ShoppingbasketComponent />}
