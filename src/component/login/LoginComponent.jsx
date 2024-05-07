@@ -1,22 +1,15 @@
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
-import Nav from "react-bootstrap/Nav";
-import Row from "react-bootstrap/Row";
-import { login } from "../../data/login";
-import { Link } from "react-router-dom";
+import { Container, Row, Col, Form, Modal, Button } from "react-bootstrap";
+import { login } from "../../data/login/login";
+import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 
 function LoginComponent() {
-  const [show, setShow] = useState(false);
+  const navigate = useNavigate();
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,19 +24,22 @@ function LoginComponent() {
     try {
       await login(email, password);
       setShowSuccessModal(true);
-      handleClose();
     } catch (err) {
       setError(err.message);
       setShowErrorModal(true);
-      handleClose();
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    navigate("/");
+  };
+
   return (
     <>
-      <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
+      <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Successo</Modal.Title>
         </Modal.Header>
@@ -57,82 +53,60 @@ function LoginComponent() {
         <Modal.Body>{error}</Modal.Body>
       </Modal>
 
-      <Nav onClick={handleShow} id="pm-none">
-        <h1>
-          <i className="bi bi-person-circle"></i>
-        </h1>
-      </Nav>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Accedi</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group
-              className="mb-3"
-              controlId="LoginComponentForm.ControlInput1"
-            >
-              <Form.Label>Indirizzo Email</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Inserisci la tua email"
-                onChange={(e) => setEmail(e.target.value)}
-                autoFocus
-                required
-              />
-            </Form.Group>
-            <Form.Group
-              className="mb-3"
-              controlId="LoginComponentForm.ControlInput2"
-            >
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Inserisci la tua passaword"
-                onChange={(e) => setPassword(e.target.value)}
-                autoFocus
-                required
-              />
-            </Form.Group>
-            <div className="text-center">
-              <p>
-                Non fai ancora parte della nostra community? {""}
-                <Link to="/singin" className="text-muted" onClick={handleClose}>
-                  Registrati.
-                </Link>
-              </p>
-            </div>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Row className="w-100 d-flex justify-content-center">
-            {isLoading ? (
-              <div className="d-flex justify-content-center align-items-center">
-                <Spinner animation="border" variant="primary" />
+      <Container>
+        <Row className="justify-content-center">
+          <Col md={6}>
+            <h2 className="text-center mb-4">Accedi</h2>
+            <Form>
+              <Form.Group className="mb-3" controlId="LoginForm.ControlInput1">
+                <Form.Label>Indirizzo Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Inserisci la tua email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoFocus
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="LoginForm.ControlInput2">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Inserisci la tua password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <div className="text-center mb-3">
+                <p>
+                  Non fai ancora parte della nostra community?{" "}
+                  <Link to="/singin">Registrati.</Link>
+                </p>
               </div>
-            ) : (
-              <>
-                <Row className="w-100">
-                  <Button
-                    className="custom-button-primary me-2"
-                    onClick={handleSubmit}
-                  >
-                    Accedi
-                  </Button>
-                </Row>
-                <Row className="w-100 mt-2">
-                  <Button
-                    className="custom-button-secondary"
-                    onClick={handleClose}
-                  >
-                    Esci
-                  </Button>
-                </Row>
-              </>
-            )}
-          </Row>
-        </Modal.Footer>
-      </Modal>
+              <div className="d-grid gap-2">
+                {isLoading ? (
+                  <Spinner animation="border" variant="primary" />
+                ) : (
+                  <>
+                    <Button
+                      variant="primary"
+                      onClick={handleSubmit}
+                      className="mb-2"
+                    >
+                      Accedi
+                    </Button>
+                    <Button variant="secondary" as={Link} to="/">
+                      Esci
+                    </Button>
+                  </>
+                )}
+              </div>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 }

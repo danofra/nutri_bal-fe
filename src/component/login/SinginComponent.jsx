@@ -8,7 +8,7 @@ import {
   Modal,
   Spinner,
 } from "react-bootstrap";
-import { singin } from "../../data/singin";
+import { singin } from "../../data/login/singin";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginComponent from "./LoginComponent";
@@ -30,6 +30,7 @@ function SinginComponent() {
   const [formData, setFormData] = useState(initialState);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ function SinginComponent() {
     setIsLoading(true);
     setShowSuccessModal(false);
     setShowErrorModal(false);
+    setShowLoginModal(false);
     setError(null);
 
     try {
@@ -74,12 +76,16 @@ function SinginComponent() {
 
   const handleSuccessModal = () => {
     setShowSuccessModal(false);
-    navigate("/login");
+    setShowLoginModal(true);
   };
 
   const handleErrorModal = () => {
     setShowErrorModal(false);
     navigate("/");
+  };
+
+  const handleLoginModal = () => {
+    setShowLoginModal(false);
   };
 
   return (
@@ -88,14 +94,20 @@ function SinginComponent() {
         <Modal.Header closeButton>
           <Modal.Title>Successo</Modal.Title>
         </Modal.Header>
+        <Modal.Body>Registrazione avvenuta con successo!</Modal.Body>
+      </Modal>
+
+      <Modal show={showLoginModal} onHide={handleLoginModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Accedi</Modal.Title>
+        </Modal.Header>
         <Modal.Body>
-          Registrazione avvenuta con successo!
           <LoginComponent />
         </Modal.Body>
       </Modal>
 
       <Modal show={showErrorModal} onHide={handleErrorModal}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className="modal-header-error">
           <Modal.Title>Errore</Modal.Title>
         </Modal.Header>
         <Modal.Body>{error}</Modal.Body>

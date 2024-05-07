@@ -1,27 +1,12 @@
-// IMPORT COMPONENT
-
-import LoginComponent from "../login/LoginComponent";
-
-// IMPORT BOOTSTRAP E ICONS
-
 import { Container, Navbar, Offcanvas } from "react-bootstrap";
 import { BiCaretRight } from "react-icons/bi";
-
-// IMPORT REACT
-
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
 function NavbarComponent() {
-  // USESTATE INITIALIZATION
-
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const [show, setShow] = useState(false);
   const [showAlimentiSubMenu, setShowAlimentiSubMenu] = useState(false);
   const [showRicettarioSubMenu, setShowRicettarioSubMenu] = useState(false);
-  const [selectedIcon, setSelectedIcon] = useState(null);
-
-  // FUNCTION TO OPEN MODAL AND OFFCANVAS
 
   const handleShow = () => setShow(true);
   const handleClose = () => {
@@ -36,14 +21,6 @@ function NavbarComponent() {
   const handleToggleRicettarioSubMenu = () => {
     setShowRicettarioSubMenu(!showRicettarioSubMenu);
     setShowAlimentiSubMenu(false);
-  };
-  const handleIconClick = (iconName) => {
-    setSelectedIcon(iconName === selectedIcon ? null : iconName);
-    setSelectedIcon(iconName);
-  };
-  const handleLoginClick = () => {
-    setShowLoginModal(true);
-    setSelectedIcon(null);
   };
 
   return (
@@ -134,10 +111,7 @@ function NavbarComponent() {
           </Offcanvas>
           <Link
             to="/calendar"
-            className={`navbar-brand link-navbar ${
-              selectedIcon === "calendar" ? "selected" : ""
-            }`}
-            onClick={() => handleIconClick("calendar")}
+            className="navbar-brand link-navbar"
           >
             <h1>
               <i className="bi bi-calendar4-week"></i>
@@ -145,13 +119,7 @@ function NavbarComponent() {
           </Link>
           <Link
             to="/"
-            className={`navbar-brand link-navbar ${
-              selectedIcon === "home" ? "selected" : ""
-            }`}
-            onClick={() => {
-              handleIconClick("home");
-              setShowLoginModal(false);
-            }}
+            className="navbar-brand link-navbar"
           >
             <h1>
               <i className="bi bi-house"></i>
@@ -159,31 +127,20 @@ function NavbarComponent() {
           </Link>
           <Link
             to="/shoppingbasket"
-            className={`navbar-brand link-navbar ${
-              selectedIcon === "basket" ? "selected" : ""
-            }`}
-            onClick={() => {
-              handleIconClick("basket");
-              setShowLoginModal(false);
-            }}
+            className="navbar-brand link-navbar"
           >
             <h1>
               <i className="bi bi-basket3"></i>
             </h1>
           </Link>
-          <Navbar.Brand
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              handleLoginClick();
-            }}
-            className={`link-navbar ${showLoginModal ? "selected" : ""}`}
+          <Link
+            to="/login"
+            className="navbar-brand link-navbar"
           >
-            <LoginComponent
-              show={showLoginModal}
-              handleClose={() => setShowLoginModal(false)}
-            />
-          </Navbar.Brand>
+            <h1>
+              <i className="bi bi-person-circle"></i>
+            </h1>
+          </Link>
         </Container>
       </Navbar>
     </>
