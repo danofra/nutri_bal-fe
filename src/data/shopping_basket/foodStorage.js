@@ -19,20 +19,22 @@ export const foodStorageGet = () => {
     });
 };
 
-export const foodStoragePatch = (foodStorage) => {
-  return fetch("http://localhost:3001/foodstorage/me", {
-    method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(foodStorage),
-  })
+export const foodStoragePut = (quantity, productName) => {
+  return fetch(
+    `http://localhost:3001/foodstoragequantity/me/${productName}?quantity=${quantity}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  )
     .then((response) => {
-      if (response.ok) {
-        return response.json();
+      if (!response.ok) {
+        throw new Error("Error during the loading of the food storage!");
       } else {
-        throw new Error("Error during the update of the food storage!");
+        return foodStorageGet();
       }
     })
     .catch((error) => {
@@ -40,9 +42,9 @@ export const foodStoragePatch = (foodStorage) => {
     });
 };
 
-export const foodStorageDelete = (productId) => {
+export const foodStorageDelete = (productName) => {
   return fetch(
-    `http://localhost:3001/foodstoragequantity/me?productId=${productId}`,
+    `http://localhost:3001/foodstoragequantity/me?productName=${productName}`,
     {
       method: "DELETE",
       headers: {
@@ -52,16 +54,10 @@ export const foodStorageDelete = (productId) => {
     }
   )
     .then((response) => {
-      if (response.ok) {
-        return response.json();
+      if (!response.ok) {
+        throw new Error("Error during the loading of the food storage!");
       } else {
-        return response.json().then((data) => {
-          throw new Error(
-            `Error ${response.status}: ${
-              data.message || "Error during the deletion of the food storage!"
-            }`
-          );
-        });
+        return foodStorageGet();
       }
     })
     .catch((error) => {

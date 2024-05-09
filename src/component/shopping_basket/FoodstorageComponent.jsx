@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import {
   Container,
   Row,
@@ -9,26 +8,27 @@ import {
   Modal,
   Spinner,
 } from "react-bootstrap";
-import { updateFooditem, removeToFooditem } from "../../redux/actions/index";
 import {
   foodStorageGet,
+  foodStoragePut,
   foodStorageDelete,
 } from "../../data/shopping_basket/foodStorage";
 
 function FoodstorageComponent() {
-  const [foodItems, setFoodItems] = useState([]);
-  const fooditemItems = useSelector((state) => state.favorites.content);
-  const dispatch = useDispatch();
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const [itemToRemove, setItemToRemove] = useState(null);
-  const [editedItem, setEditedItem] = useState(null);
-  const [newQuantity, setNewQuantity] = useState(0);
+  const [items, setItems] = useState([]);
+  const [newEditName, setNewEditName] = useState("");
+  const [newEditQuantity, setNewEditQuantity] = useState(0);
+  const [deleteItem, setDeleteItem] = useState(null);
+  const [showPatchModal, setShowPatchModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  /* FETCH GET */
 
   useEffect(() => {
     foodStorageGet()
       .then((data) => {
-        setFoodItems(data.content);
+        setItems(data.content);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -37,43 +37,39 @@ function FoodstorageComponent() {
       });
   }, []);
 
-  const handleEditQuantity = (item, newQuantity) => {
-    const updatedFoodItems = foodItems.map((foodItem) => {
-      if (foodItem.id === item.id) {
-        return { ...foodItem, quantity: newQuantity };
-      }
-      return foodItem;
-    });
-    setFoodItems(updatedFoodItems);
-    dispatch(updateFooditem(updatedFoodItems));
+  /* FETCH PUT */
+
+  const handleEditQuantity = () => {
+    foodStoragePut(newEditQuantity, newEditName)
+      .then((data) => {
+        setItems(data.content);
+      })
+      .catch((error) => {
+        console.error("Error fetching food storage:", error);
+      });
+    setShowPatchModal(false);
   };
 
-  const handleShowConfirmation = (item) => {
-    setItemToRemove(item);
-    setShowConfirmationModal(true);
+  /* FETCH DELETE */
+
+  const handleDeleteItem = () => {
+    foodStorageDelete(deleteItem)
+      .then((data) => {
+        setItems(data.content);
+      })
+      .catch((error) => {
+        console.error("Error fetching food storage:", error);
+      });
+    setShowDeleteModal(false);
   };
 
-  const handleConfirmDelete = () => {
-    if (itemToRemove) {
-      foodStorageDelete(itemToRemove.product.id)
-        .then(() => {
-          const updatedFoodItems = foodItems.filter(
-            (foodItem) => foodItem.id !== itemToRemove.id
-          );
-          setFoodItems(updatedFoodItems);
-          dispatch(removeToFooditem(itemToRemove));
-          setShowConfirmationModal(false); // Chiudi il modale dopo aver eliminato l'elemento
-        })
-        .catch((error) => {
-          console.error("Error deleting food item:", error);
-          // Gestisci l'errore, ad esempio mostrando un messaggio all'utente
-        });
-    }
+  /* CLOSE MODAL */
+  const handleClosePatchModal = () => {
+    setShowPatchModal(false);
   };
 
-  const handleCloseModal = () => {
-    setShowConfirmationModal(false);
-    setItemToRemove(null);
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
   };
 
   return (
@@ -86,8 +82,8 @@ function FoodstorageComponent() {
               <div className="d-flex justify-content-center align-items-center">
                 <Spinner animation="border" className="spinner" />
               </div>
-            ) : foodItems && foodItems.length > 0 ? (
-              foodItems.map((item) => (
+            ) : items && items.length > 0 ? (
+              items.map((item) => (
                 <Card key={item.id} className="mb-1">
                   <Card.Body>{item.product.name}</Card.Body>
                   <Card.Footer>
@@ -97,15 +93,19 @@ function FoodstorageComponent() {
                         <Button
                           className="me-2 custom-button-primary"
                           onClick={() => {
-                            setEditedItem(item);
-                            setNewQuantity(item.quantity);
+                            setShowPatchModal(true);
+                            setNewEditName(item.product.name);
+                            setNewEditQuantity(item.quantity);
                           }}
                         >
                           <i className="bi bi-pencil"></i>
                         </Button>
                         <Button
                           className="custom-button-secondary"
-                          onClick={() => handleShowConfirmation(item)}
+                          onClick={() => {
+                            setShowDeleteModal(true);
+                            setDeleteItem(item.product.name);
+                          }}
                         >
                           <i className="bi bi-eraser"></i>
                         </Button>
@@ -122,26 +122,29 @@ function FoodstorageComponent() {
           </Col>
         </Row>
       </Container>
-      {/* Modale di conferma */}
-      <Modal show={showConfirmationModal} onHide={handleCloseModal}>
+
+      {/* MODAL DELETE */}
+      <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
         <Modal.Header closeButton>
           <Modal.Title>Conferma eliminazione</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Sei sicuro di voler eliminare l&apos;elemento{" "}
-          {itemToRemove && itemToRemove.product.name}?
+          Sei sicuro di voler eliminare l&apos;elemento {deleteItem}{" "}
+          selezionato?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+          <Button variant="secondary" onClick={handleCloseDeleteModal}>
             Annulla
           </Button>
-          <Button variant="primary" onClick={handleConfirmDelete}>
+          <Button variant="primary" onClick={handleDeleteItem}>
             Conferma
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* Modale per modifica quantità */}
-      <Modal show={!!editedItem} onHide={() => setEditedItem(null)}>
+
+      {/* MODAL PATCH */}
+
+      <Modal show={showPatchModal} onHide={handleClosePatchModal}>
         <Modal.Header closeButton>
           <Modal.Title>Modifica quantità</Modal.Title>
         </Modal.Header>
@@ -149,17 +152,20 @@ function FoodstorageComponent() {
           <input
             type="number"
             className="form-control"
-            value={newQuantity}
-            onChange={(e) => setNewQuantity(e.target.value)}
+            value={newEditQuantity}
+            onChange={(e) => setNewEditQuantity(parseInt(e.target.value))}
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setEditedItem(null)}>
+          <Button
+            className="custom-button-secondary"
+            onClick={handleClosePatchModal}
+          >
             Annulla
           </Button>
           <Button
-            variant="primary"
-            onClick={() => handleEditQuantity(editedItem, newQuantity)}
+            className="custom-button-primary"
+            onClick={handleEditQuantity}
           >
             Salva
           </Button>
