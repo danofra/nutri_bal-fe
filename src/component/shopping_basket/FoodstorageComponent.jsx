@@ -133,11 +133,14 @@ function FoodstorageComponent() {
           selezionato?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseDeleteModal}>
+          <Button
+            className="custom-button-secondary"
+            onClick={handleCloseDeleteModal}
+          >
             Annulla
           </Button>
-          <Button variant="primary" onClick={handleDeleteItem}>
-            Conferma
+          <Button className="custom-button-primary" onClick={handleDeleteItem}>
+            Salva
           </Button>
         </Modal.Footer>
       </Modal>

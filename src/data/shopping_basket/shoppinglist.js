@@ -8,10 +8,10 @@ export const groceryShoppingGet = () => {
     },
   })
     .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
+      if (!response.ok) {
         throw new Error("Error during the loading of the grocery shopping!");
+      } else {
+        return response.json();
       }
     })
     .catch((error) => {
@@ -31,10 +31,10 @@ export const groceryShoppingPost = (quantity, productName) => {
     }
   )
     .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
+      if (!response.ok) {
         throw new Error("Error during the loading of the grocery shopping!");
+      } else {
+        return groceryShoppingGet();
       }
     })
     .catch((error) => {
@@ -77,7 +77,7 @@ export const groceryShoppingDelete = (productName) => {
     }
   )
     .then((response) => {
-      if (!response.ok) {
+      if (!response.status === 204) {
         throw new Error("Error during the loading of the grocery shopping!");
       } else {
         return groceryShoppingGet();
@@ -88,4 +88,25 @@ export const groceryShoppingDelete = (productName) => {
     });
 };
 
-
+export const foodStoragePost = (quantity, productName) => {
+  return fetch(
+    `http://localhost:3001/foodstoragequantity/me?quantity=${quantity}&productName=${productName}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error during the creation of the food storage!");
+      } else {
+        return groceryShoppingGet();
+      }
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
+};

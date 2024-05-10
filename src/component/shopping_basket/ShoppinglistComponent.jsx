@@ -13,6 +13,7 @@ import {
   groceryShoppingPost,
   groceryShoppingPut,
   groceryShoppingDelete,
+  foodStoragePost,
 } from "../../data/shopping_basket/shoppinglist";
 
 function ShoppinglistComponent() {
@@ -21,7 +22,7 @@ function ShoppinglistComponent() {
   const [newItemQuantity, setNewItemQuantity] = useState(1);
   const [newEditName, setNewEditName] = useState("");
   const [newEditQuantity, setNewEditQuantity] = useState(0);
-  const [deleteItem, setDeleteItem] = useState(null);
+  const [deleteItem, setDeleteItem] = useState("");
   const [showPatchModal, setShowPatchModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,11 +48,8 @@ function ShoppinglistComponent() {
       groceryShoppingPost(newItemQuantity, newItemName)
         .then((data) => {
           setItems(data.content);
-          return groceryShoppingGet().then((updatedData) => {
-            setItems(updatedData.content);
-            setNewItemName("");
-            setNewItemQuantity(1);
-          });
+          setNewItemName("");
+          setNewItemQuantity(1);
         })
         .catch((error) => {
           console.error("Error adding item to grocery shopping list:", error);
@@ -59,7 +57,7 @@ function ShoppinglistComponent() {
     }
   };
 
-  /* FETCH PATCH */
+  /* FETCH PUT */
 
   const handleEditQuantity = () => {
     groceryShoppingPut(newEditQuantity, newEditName)
@@ -85,10 +83,63 @@ function ShoppinglistComponent() {
     setShowDeleteModal(false);
   };
 
+  /* FETCH POST FOR FOOD STORAGE AND DELETE TO THE GROCERY SHOPPING */
+
   const handleToggleItem = (index) => {
     const updatedItems = [...items];
     updatedItems[index].checked = !updatedItems[index].checked;
     setItems(updatedItems);
+  };
+
+  const getCheckedItems = () => {
+    return items.filter((item) => item.checked);
+  };
+
+  const remainingItems = () => {
+    return items.filter((item) => !item.checked);
+  };
+
+  const groceryShoppingGetAfterPost = () => {
+    groceryShoppingGet()
+      .then(() => {
+        setItems(remainingItems);
+      })
+      .catch((error) => {
+        console.error(
+          "Errore durante il trasferimento dell'articolo al magazzino alimentare:",
+          error
+        );
+      });
+  };
+
+  const handleTransferToFoodStorage = (itemsToTransfer) => {
+    const itemsToTransferCopy = [...itemsToTransfer];
+    const transferSequentially = (index) => {
+      if (index >= itemsToTransferCopy.length) {
+        setItems([...items]);
+        return;
+      }
+      const item = itemsToTransferCopy[index];
+      foodStoragePost(item.quantity, item.product.name)
+        .then(() => {
+          transferSequentially(index + 1);
+          groceryShoppingDelete(item.product.name);
+          groceryShoppingGetAfterPost();
+        })
+        .catch((error) => {
+          console.error(
+            "Errore durante il trasferimento dell'articolo al magazzino alimentare:",
+            error
+          );
+          transferSequentially(index + 1);
+        });
+    };
+    transferSequentially(0);
+  };
+
+  const handleTransferToFoodItem = () => {
+    const checkedItems = getCheckedItems();
+    handleTransferToFoodStorage(checkedItems);
   };
 
   /* CLOSE MODAL */
@@ -188,7 +239,12 @@ function ShoppinglistComponent() {
                 <Spinner animation="border" className="spinner" />
               </div>
             ) : (
-              <Button className="custom-button-primary">
+              <Button
+                className="custom-button-primary"
+                onClick={() =>
+                  handleTransferToFoodItem(newItemQuantity, newItemName)
+                }
+              >
                 Trasferisci alla dispensa
               </Button>
             )}
@@ -206,11 +262,14 @@ function ShoppinglistComponent() {
           selezionato?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseDeleteModal}>
+          <Button
+            className="custom-button-secondary"
+            onClick={handleCloseDeleteModal}
+          >
             Annulla
           </Button>
-          <Button variant="primary" onClick={handleDeleteItem}>
-            Conferma
+          <Button className="custom-button-primary" onClick={handleDeleteItem}>
+            Salva
           </Button>
         </Modal.Footer>
       </Modal>
@@ -232,16 +291,16 @@ function ShoppinglistComponent() {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            className="custom-button-primary"
-            onClick={handleEditQuantity}
-          >
-            Modifica
-          </Button>
-          <Button
             className="custom-button-secondary"
             onClick={handleClosePatchModal}
           >
-            Chiudi
+            Annulla
+          </Button>
+          <Button
+            className="custom-button-primary"
+            onClick={handleEditQuantity}
+          >
+            Salva
           </Button>
         </Modal.Footer>
       </Modal>
