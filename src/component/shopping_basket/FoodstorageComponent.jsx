@@ -85,7 +85,13 @@ function FoodstorageComponent() {
             ) : items && items.length > 0 ? (
               items.map((item) => (
                 <Card key={item.id} className="mb-1">
-                  <Card.Body>{item.product.name}</Card.Body>
+                  <Card.Body className="d-flex justify-content-between align-items-center">
+                    <Card.Title>{item.product.name}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      Categoria: {item.product.category} - Kcal:{" "}
+                      {item.product.kcal}
+                    </Card.Subtitle>
+                  </Card.Body>
                   <Card.Footer>
                     <Row className="d-flex justify-content-between align-items-center">
                       <Col>Quantità: {item.quantity}</Col>

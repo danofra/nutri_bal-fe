@@ -47,6 +47,7 @@ export const singin = (
       city_of_residence = data.city_of_residence;
       robot = data.robot;
       console.log(data);
+      
     })
     .catch((error) => {
       throw new Error(error.message);

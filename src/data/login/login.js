@@ -1,3 +1,6 @@
+import { newGroceryShoppingPost } from "../shopping_basket/shoppinglist";
+import { newFoodStoragePost } from "../shopping_basket/foodStorage";
+
 export const login = (email, password) => {
   return fetch("http://localhost:3001/auth/login", {
     method: "POST",
@@ -15,6 +18,8 @@ export const login = (email, password) => {
     })
     .then((data) => {
       localStorage.setItem("token", data.accessToken);
+      newGroceryShoppingPost();
+      newFoodStoragePost();
     })
     .catch((error) => {
       console.log(error);

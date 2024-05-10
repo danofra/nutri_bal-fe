@@ -1,4 +1,24 @@
 const token = localStorage.getItem("token");
+export const newFoodStoragePost = () => {
+  return fetch("http://localhost:3001/foodstorage/me", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error during the loading of the food storage!");
+      } else {
+        return response.json();
+      }
+    })
+    .catch((error) => {
+      throw new Error(error.message);
+    });
+};
+
 export const foodStorageGet = () => {
   return fetch("http://localhost:3001/foodstoragequantity/me", {
     method: "GET",
