@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Row, Col, Form, Button, Modal, Container } from "react-bootstrap";
+import { mealsGet, newMealsPost } from "../../data/calendar/calendar";
 
 function CalendarComponent() {
   const getDaysInMonth = (month, year) => {
@@ -14,21 +15,27 @@ function CalendarComponent() {
 
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
+  const currentMonth = currentDate.getMonth() - 1;
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
-  const [mealData, setMealData] = useState({});
-  const [showModal, setShowModal] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth + 1);
+  const [mealData, setMealData] = useState([]);
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [showPatchModal, setShowPatchModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedMealType, setSelectedMealType] = useState("");
   const [mealDescription, setMealDescription] = useState("");
   const [mealQuantity, setMealQuantity] = useState(1);
 
   useEffect(() => {
-    setSelectedYear(currentYear);
-    setSelectedMonth(currentMonth);
-  }, [currentMonth, currentYear]);
+    fetchMealData();
+  }, [selectedMonth, selectedYear]);
+
+  const fetchMealData = async () => {
+    const data = await mealsGet(selectedMonth + 1, selectedYear);
+    setMealData(data);
+  };
 
   const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
   const daysArray = Array.from(
@@ -36,54 +43,39 @@ function CalendarComponent() {
     (_, index) => index + 1
   );
 
-  const handleShowModal = (day, mealType) => {
+  const handleShowPostModal = (day, mealType) => {
     setSelectedDay(day);
     setSelectedMealType(mealType);
-    setShowModal(true);
+    setShowPostModal(true);
   };
 
-  const handleCloseModal = () => {
+  const handleClosePostModal = () => {
     setSelectedDay("");
     setSelectedMealType("");
     setMealDescription("");
     setMealQuantity(1);
-    setShowModal(false);
+    setShowPostModal(false);
   };
 
-  const handleSaveMeal = () => {
-    const key = `${selectedYear}-${selectedMonth + 1}-${selectedDay}`;
-    const mealItem = {
-      description: mealDescription,
-      quantity: mealQuantity,
-    };
+  const handleClosePatchModal = () => {
+    setShowPatchModal(false);
+  };
 
-    setMealData((prevData) => {
-      const updatedData = { ...prevData };
-      if (updatedData[key]) {
-        if (updatedData[key][selectedMealType]) {
-          const existingMealIndex = updatedData[key][
-            selectedMealType
-          ].findIndex(
-            (meal) =>
-              meal.description.toLowerCase() === mealDescription.toLowerCase()
-          );
-          if (existingMealIndex !== -1) {
-            updatedData[key][selectedMealType][existingMealIndex].quantity +=
-              mealQuantity;
-          } else {
-            updatedData[key][selectedMealType].push(mealItem);
-          }
-        } else {
-          updatedData[key][selectedMealType] = [mealItem];
-        }
-      } else {
-        updatedData[key] = {
-          [selectedMealType]: [mealItem],
-        };
-      }
-      return updatedData;
-    });
-    handleCloseModal();
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+  };
+
+  const handlePostMeal = async () => {
+    const data = await newMealsPost(
+      selectedDay,
+      selectedMonth + 1,
+      selectedYear,
+      selectedMealType,
+      mealDescription,
+      mealQuantity
+    );
+    setMealData(data);
+    handleClosePostModal();
   };
 
   return (
@@ -94,6 +86,7 @@ function CalendarComponent() {
             <h1>Calendario</h1>
           </Col>
         </Row>
+        {/* CALENDAR */}
         <Row className="select-container">
           <Col>
             <select
@@ -126,7 +119,7 @@ function CalendarComponent() {
         </Row>
         <Row className="row-cols-7">
           {daysArray.map((day) => (
-            <Col key={day} sm={12} md={6} lg={4} xl={3}>
+            <Col key={day} sm={12} md={6} lg={4} xl={4}>
               <Container className="day-container">
                 <Row className="justify-content-between align-items-center">
                   <Col
@@ -139,7 +132,7 @@ function CalendarComponent() {
                     {day}
                   </Col>
                 </Row>
-                {["colazione", "pranzo", "cena"].map((mealType) => (
+                {["BREAKFAST", "LUNCH", "DINNER"].map((mealType) => (
                   <Row
                     key={mealType}
                     className="justify-content-start align-items-center"
@@ -153,7 +146,7 @@ function CalendarComponent() {
                         {mealType.charAt(0).toUpperCase() + mealType.slice(1)}:
                       </strong>
                       <Button
-                        onClick={() => handleShowModal(day, mealType)}
+                        onClick={() => handleShowPostModal(day, mealType)}
                         className="custom-button-ter"
                       >
                         <i className="bi bi-plus-circle-fill"></i>
@@ -165,13 +158,38 @@ function CalendarComponent() {
                       className="d-flex justify-content-between align-items-center mt-2 mb-2"
                     >
                       <ul className="w-100">
-                        {mealData[
-                          `${selectedYear}-${selectedMonth + 1}-${day}`
-                        ]?.[mealType]?.map((meal, index) => (
-                          <li key={index} className="border-bottom border-1">
-                            {meal.quantity} - {meal.description}
-                          </li>
-                        ))}
+                        {mealData.length > 0 &&
+                          mealData
+                            .filter(
+                              (item) =>
+                                item.type_meals === mealType && item.day === day
+                            )
+                            .map((item, index) => (
+                              <div key={index}>
+                                <>
+                                  {item.mealsQuantity.map((meal, index) => (
+                                    <div
+                                      className="d-flex justify-content-between"
+                                      key={index}
+                                    >
+                                      <div>
+                                        <li className="border-bottom border-1">
+                                          {meal.quantity} - {meal.product.name}
+                                        </li>
+                                      </div>
+                                      <div>
+                                        <Button className="custom-button-quaternary">
+                                          <i className="bi bi-pencil"></i>
+                                        </Button>
+                                        <Button className="custom-button-quintary">
+                                          <i className="bi bi-trash"></i>
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </>
+                              </div>
+                            ))}
                       </ul>
                     </Col>
                   </Row>
@@ -181,7 +199,10 @@ function CalendarComponent() {
           ))}
         </Row>
       </Container>
-      <Modal show={showModal} onHide={handleCloseModal}>
+
+      {/* MODAL ADD MEALS */}
+
+      <Modal show={showPostModal} onHide={handleClosePostModal}>
         <Modal.Header closeButton>
           <Modal.Title>Inserisci Pasto</Modal.Title>
         </Modal.Header>
@@ -208,11 +229,67 @@ function CalendarComponent() {
         <Modal.Footer>
           <Button
             className="custom-button-secondary"
-            onClick={handleCloseModal}
+            onClick={handleClosePostModal}
           >
             Annulla
           </Button>
-          <Button className="custom-button-primary" onClick={handleSaveMeal}>
+          <Button className="custom-button-primary" onClick={handlePostMeal}>
+            Salva
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* MODAL DELETE */}
+
+      <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Conferma eliminazione</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Sei sicuro di voler eliminare l&apos;elemento selezionato?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            className="custom-button-secondary"
+            onClick={handleCloseDeleteModal}
+          >
+            Annulla
+          </Button>
+          <Button
+            className="custom-button-primary" /* onClick={handleDeleteItem} */
+          >
+            Salva
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* MODAL PATCH */}
+
+      <Modal show={showPatchModal} onHide={handleClosePatchModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modifica quantità</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Control
+            type="number"
+            placeholder="Aggiungi quantità"
+            className=" me-2 "
+            style={{ width: "100%" }}
+            /* value={newEditQuantity}
+            onChange={(e) => setNewEditQuantity(parseInt(e.target.value))} */
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            className="custom-button-secondary"
+            onClick={handleClosePatchModal}
+          >
+            Annulla
+          </Button>
+          <Button
+            className="custom-button-primary"
+            /*   onClick={handleEditQuantity} */
+          >
             Salva
           </Button>
         </Modal.Footer>

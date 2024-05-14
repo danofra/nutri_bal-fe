@@ -203,6 +203,45 @@ a {
 .custom-button-ter:active {
   background-color: transparent !important;
 }
+.custom-button-quaternary {
+  text-align: center;
+  font-size: 11px;
+  color: black;
+  background-color: rgb(153, 204, 51);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+.custom-button-quaternary:hover {
+  background-color: greenyellow;
+  color: black;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+.custom-button-quaternary:active {
+  background-color: greenyellow !important;
+}
+.custom-button-quintary {
+  text-align: center;
+  font-size: 11px;
+  color: black;
+  background-color: red;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+.custom-button-quintary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  background-color: #621010;
+}
+.custom-button-quintary:active {
+  background-color: #621010 !important;
+}
 .custom-checkbox .form-check-input:checked {
   background-color: yellowgreen;
   border-color: yellowgreen;
