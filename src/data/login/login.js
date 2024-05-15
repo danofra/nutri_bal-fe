@@ -13,7 +13,9 @@ export const login = (email, password) => {
       if (response.ok) {
         return response.json();
       } else {
-        throw new Error("Errore durante l'accesso!");
+        return response.json().then((data) => {
+          throw new Error(data.message);
+        });
       }
     })
     .then((data) => {
@@ -22,7 +24,6 @@ export const login = (email, password) => {
       newFoodStoragePost();
     })
     .catch((error) => {
-      console.log(error);
-      throw new Error(error.message);
+      throw new Error(error);
     });
 };
