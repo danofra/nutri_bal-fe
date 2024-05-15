@@ -19,7 +19,7 @@ function FoodstorageComponent() {
   const [newEditName, setNewEditName] = useState("");
   const [newEditQuantity, setNewEditQuantity] = useState(0);
   const [deleteItem, setDeleteItem] = useState(null);
-  const [showPatchModal, setShowPatchModal] = useState(false);
+  const [showPutModal, setShowPutModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -47,7 +47,7 @@ function FoodstorageComponent() {
       .catch((error) => {
         console.error("Error fetching food storage:", error);
       });
-    setShowPatchModal(false);
+    setShowPutModal(false);
   };
 
   /* FETCH DELETE */
@@ -64,8 +64,8 @@ function FoodstorageComponent() {
   };
 
   /* CLOSE MODAL */
-  const handleClosePatchModal = () => {
-    setShowPatchModal(false);
+  const handleClosePutModal = () => {
+    setShowPutModal(false);
   };
 
   const handleCloseDeleteModal = () => {
@@ -99,7 +99,7 @@ function FoodstorageComponent() {
                         <Button
                           className="me-2 custom-button-primary"
                           onClick={() => {
-                            setShowPatchModal(true);
+                            setShowPutModal(true);
                             setNewEditName(item.product.name);
                             setNewEditQuantity(item.quantity);
                           }}
@@ -130,6 +130,7 @@ function FoodstorageComponent() {
       </Container>
 
       {/* MODAL DELETE */}
+
       <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
         <Modal.Header closeButton>
           <Modal.Title>Conferma eliminazione</Modal.Title>
@@ -151,9 +152,9 @@ function FoodstorageComponent() {
         </Modal.Footer>
       </Modal>
 
-      {/* MODAL PATCH */}
+      {/* MODAL PUT */}
 
-      <Modal show={showPatchModal} onHide={handleClosePatchModal}>
+      <Modal show={showPutModal} onHide={handleClosePutModal}>
         <Modal.Header closeButton>
           <Modal.Title>Modifica quantità</Modal.Title>
         </Modal.Header>
@@ -168,7 +169,7 @@ function FoodstorageComponent() {
         <Modal.Footer>
           <Button
             className="custom-button-secondary"
-            onClick={handleClosePatchModal}
+            onClick={handleClosePutModal}
           >
             Annulla
           </Button>

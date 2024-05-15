@@ -58,3 +58,46 @@ export const mealsGet = (month, year) => {
       throw new Error(error.message);
     });
 };
+
+export const mealsPut = (mealsQuantityId, quantity) => {
+  return fetch(
+    `http://localhost:3001/mealsquantity/me/${mealsQuantityId}?quantity=${quantity}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error during the loading of the meals!");
+      } else {
+        return;
+      }
+    })
+    .catch((error) => {
+      throw new Error(error.message);
+    });
+};
+
+export const mealsDelete = (mealsQuantityId) => {
+  return fetch(`http://localhost:3001/mealsquantity/me/${mealsQuantityId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error during the loading of the meals!");
+      } else {
+        return;
+      }
+    })
+    .catch((error) => {
+      throw new Error(error.message);
+    });
+};

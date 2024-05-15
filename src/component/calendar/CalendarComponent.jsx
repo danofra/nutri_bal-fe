@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { Row, Col, Form, Button, Modal, Container } from "react-bootstrap";
-import { mealsGet, newMealsPost } from "../../data/calendar/calendar";
+import {
+  mealsGet,
+  newMealsPost,
+  mealsPut,
+  mealsDelete,
+} from "../../data/calendar/calendar";
 
 function CalendarComponent() {
   const getDaysInMonth = (month, year) => {
@@ -21,20 +26,58 @@ function CalendarComponent() {
   const [selectedMonth, setSelectedMonth] = useState(currentMonth + 1);
   const [mealData, setMealData] = useState([]);
   const [showPostModal, setShowPostModal] = useState(false);
-  const [showPatchModal, setShowPatchModal] = useState(false);
+  const [showPutModal, setShowPutModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedMealType, setSelectedMealType] = useState("");
   const [mealDescription, setMealDescription] = useState("");
   const [mealQuantity, setMealQuantity] = useState(1);
+  const [newEditQuantity, setNewEditQuantity] = useState(0);
+  const [editMealsQuantityId, setEditMealsQuantityId] = useState(0);
+  const [deleteMealsQuantityId, setDeleteMealsQuantityId] = useState(0);
+  const [deleteMealsQuantityName, setDeleteMealsQuantityName] = useState("");
 
   useEffect(() => {
     fetchMealData();
   }, [selectedMonth, selectedYear]);
 
+  /* FETCH GET */
+
   const fetchMealData = async () => {
     const data = await mealsGet(selectedMonth + 1, selectedYear);
     setMealData(data);
+  };
+
+  /* FETCH POST */
+
+  const handlePostMeal = async () => {
+    const data = {
+      month: selectedMonth + 1,
+      year: selectedYear,
+      day: selectedDay,
+      type_meals: selectedMealType,
+      productName: mealDescription,
+      quantity: mealQuantity,
+    };
+    await newMealsPost(data);
+    handleClosePostModal();
+    fetchMealData();
+  };
+
+  /* FETCH PUT */
+
+  const handlePutMeal = async () => {
+    await mealsPut(editMealsQuantityId, newEditQuantity);
+    handleClosePutModal();
+    fetchMealData();
+  };
+
+  /* FETCH DELETE */
+
+  const handleDeleteMeal = async () => {
+    await mealsDelete(deleteMealsQuantityId);
+    handleCloseDeleteModal();
+    fetchMealData();
   };
 
   const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
@@ -43,11 +86,15 @@ function CalendarComponent() {
     (_, index) => index + 1
   );
 
+  /* OPEN MODAL */
+
   const handleShowPostModal = (day, mealType) => {
     setSelectedDay(day);
     setSelectedMealType(mealType);
     setShowPostModal(true);
   };
+
+  /* CLOSE MODAL */
 
   const handleClosePostModal = () => {
     setSelectedDay("");
@@ -57,25 +104,12 @@ function CalendarComponent() {
     setShowPostModal(false);
   };
 
-  const handleClosePatchModal = () => {
-    setShowPatchModal(false);
+  const handleClosePutModal = () => {
+    setShowPutModal(false);
   };
 
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
-  };
-
-  const handlePostMeal = async () => {
-    const data = await newMealsPost(
-      selectedDay,
-      selectedMonth + 1,
-      selectedYear,
-      selectedMealType,
-      mealDescription,
-      mealQuantity
-    );
-    setMealData(data);
-    handleClosePostModal();
   };
 
   return (
@@ -178,10 +212,26 @@ function CalendarComponent() {
                                         </li>
                                       </div>
                                       <div>
-                                        <Button className="custom-button-quaternary">
+                                        <Button
+                                          className="custom-button-quaternary"
+                                          onClick={() => {
+                                            setShowPutModal(true);
+                                            setEditMealsQuantityId(meal.id);
+                                            setNewEditQuantity(meal.quantity);
+                                          }}
+                                        >
                                           <i className="bi bi-pencil"></i>
                                         </Button>
-                                        <Button className="custom-button-quintary">
+                                        <Button
+                                          className="custom-button-quintary"
+                                          onClick={() => {
+                                            setShowDeleteModal(true);
+                                            setDeleteMealsQuantityId(meal.id);
+                                            setDeleteMealsQuantityName(
+                                              meal.product.name
+                                            );
+                                          }}
+                                        >
                                           <i className="bi bi-trash"></i>
                                         </Button>
                                       </div>
@@ -246,7 +296,8 @@ function CalendarComponent() {
           <Modal.Title>Conferma eliminazione</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Sei sicuro di voler eliminare l&apos;elemento selezionato?
+          Sei sicuro di voler eliminare l&apos;elemento{" "}
+          {deleteMealsQuantityName} selezionato?
         </Modal.Body>
         <Modal.Footer>
           <Button
@@ -255,17 +306,15 @@ function CalendarComponent() {
           >
             Annulla
           </Button>
-          <Button
-            className="custom-button-primary" /* onClick={handleDeleteItem} */
-          >
+          <Button className="custom-button-primary" onClick={handleDeleteMeal}>
             Salva
           </Button>
         </Modal.Footer>
       </Modal>
 
-      {/* MODAL PATCH */}
+      {/* MODAL PUT */}
 
-      <Modal show={showPatchModal} onHide={handleClosePatchModal}>
+      <Modal show={showPutModal} onHide={handleClosePutModal}>
         <Modal.Header closeButton>
           <Modal.Title>Modifica quantità</Modal.Title>
         </Modal.Header>
@@ -275,21 +324,18 @@ function CalendarComponent() {
             placeholder="Aggiungi quantità"
             className=" me-2 "
             style={{ width: "100%" }}
-            /* value={newEditQuantity}
-            onChange={(e) => setNewEditQuantity(parseInt(e.target.value))} */
+            value={newEditQuantity}
+            onChange={(e) => setNewEditQuantity(parseInt(e.target.value))}
           />
         </Modal.Body>
         <Modal.Footer>
           <Button
             className="custom-button-secondary"
-            onClick={handleClosePatchModal}
+            onClick={handleClosePutModal}
           >
             Annulla
           </Button>
-          <Button
-            className="custom-button-primary"
-            /*   onClick={handleEditQuantity} */
-          >
+          <Button className="custom-button-primary" onClick={handlePutMeal}>
             Salva
           </Button>
         </Modal.Footer>
