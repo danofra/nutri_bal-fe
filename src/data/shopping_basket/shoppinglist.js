@@ -1,22 +1,31 @@
 const token = localStorage.getItem("token");
-export const newGroceryShoppingPost = () => {
-  return fetch("http://localhost:3001/groceryshopping/me", {
-    method: "POST",
-    headers: {
+
+export const newGroceryShoppingPost = (token) => {
+  if (token && token.includes(".")) {
+    const headers = {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error during the loading of the food storage!");
-      } else {
-        return response.json();
-      }
+    };
+
+    return fetch("http://localhost:3001/groceryshopping/me", {
+      method: "POST",
+      headers,
     })
-    .catch((error) => {
-      throw new Error(error.message);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            "Errore durante il caricamento del carrello della spesa"
+          );
+        } else {
+          return response.json();
+        }
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
+  } else {
+    console.error("Token non valido");
+  }
 };
 
 export const groceryShoppingGet = () => {

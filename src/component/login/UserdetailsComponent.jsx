@@ -14,6 +14,7 @@ import {
   userDetailsGet,
   userDetailsDelete,
   userDetailsUploadImage,
+  userDetailsPut,
 } from "../../data/login/userdetails";
 
 function UserdetailsComponent() {
@@ -22,14 +23,29 @@ function UserdetailsComponent() {
   const [showSuccessDeleteModal, setShowSuccessDeleteModal] = useState(false);
   const [showSuccessUploadImageModal, setShowSuccessUploadImageModal] =
     useState(false);
+  const [showSuccessPutUserModal, setShowSuccessPutUserModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState([]);
+  const [editFormData, setEditFormData] = useState({
+    name: userData.name,
+    surname: userData.surname,
+    email: userData.email,
+    password: "",
+    date_of_birth: userData.date_of_birth,
+    gender: userData.gender,
+    physical_activity: userData.physical_activity,
+    nationality: userData.nationality,
+    city_of_residence: userData.city_of_residence,
+  });
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showUploadImageModal, setShowUploadImageModal] = useState(false);
+  const [showPutUserModal, setShowPutUserModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [formData, setFormData] = useState(new FormData());
+
+  /* FETCH GET */
 
   useEffect(() => {
     userDetailsGet()
@@ -40,30 +56,7 @@ function UserdetailsComponent() {
       .catch((error) => Error(error));
   }, []);
 
-  const gender = (gender) => {
-    if (gender === "MALE") {
-      return "Maschio";
-    } else if (gender === "FEMALE") {
-      return "Femmina";
-    } else {
-      return "Altro";
-    }
-  };
-  const physicalActivity = (physical_activity) => {
-    if (physical_activity === "SEDENTARY") {
-      return "Sedentario";
-    } else if (physical_activity === "MODERATELY_ACTIVE") {
-      return "Moderatamente attivo";
-    } else {
-      return "Attivo";
-    }
-  };
-
-  const handleImageChange = (e) => {
-    const updateFromData = new FormData();
-    updateFromData.append("avatar", e.target.files[0]);
-    setFormData(updateFromData);
-  };
+  /* LOGOUT */
 
   const logout = async () => {
     try {
@@ -76,6 +69,29 @@ function UserdetailsComponent() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  /* FETCH DELETE */
+
+  const userDelete = async () => {
+    try {
+      await userDetailsDelete();
+      setShowDeleteModal(false);
+      setShowSuccessDeleteModal(true);
+    } catch (err) {
+      setError(err.message);
+      setShowErrorModal(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  /* FETCH UPLOAD IMAGE */
+
+  const handleImageChange = (e) => {
+    const updateFromData = new FormData();
+    updateFromData.append("avatar", e.target.files[0]);
+    setFormData(updateFromData);
   };
 
   const handleUploadImage = async (e) => {
@@ -95,18 +111,89 @@ function UserdetailsComponent() {
     }
   };
 
-  const userDelete = async () => {
+  /* FETCH PUT */
+
+  const handleShowPutUserModal = () => {
+    setEditFormData({
+      name: userData.name,
+      surname: userData.surname,
+      email: userData.email,
+      password: "",
+      date_of_birth: userData.date_of_birth,
+      gender: userData.gender,
+      physical_activity: userData.physical_activity,
+      nationality: userData.nationality,
+      city_of_residence: userData.city_of_residence,
+    });
+    setShowPutUserModal(true);
+  };
+
+  const handleEditFormChange = (event) => {
+    setEditFormData({
+      ...editFormData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleEditSubmit = async (event) => {
+    event.preventDefault();
+    setIsLoading(true);
     try {
-      await userDetailsDelete();
-      setShowDeleteModal(false);
-      setShowSuccessDeleteModal(true);
+      const userDataObject = {
+        name: editFormData.name,
+        surname: editFormData.surname,
+        email: editFormData.email,
+        password: editFormData.password,
+        dateOfBirth: editFormData.date_of_birth,
+        gender: editFormData.gender,
+        physicalActivity: editFormData.physical_activity,
+        nationality: editFormData.nationality,
+        cityOfResidence: editFormData.city_of_residence,
+      };
+      await userDetailsPut(
+        userDataObject.name,
+        userDataObject.surname,
+        userDataObject.email,
+        userDataObject.password,
+        userDataObject.dateOfBirth,
+        userDataObject.gender,
+        userDataObject.physicalActivity,
+        userDataObject.nationality,
+        userDataObject.cityOfResidence
+      );
+      setIsLoading(false);
+      setShowPutUserModal(false);
+      setShowSuccessPutUserModal(true);
     } catch (err) {
+      setIsLoading(false);
       setError(err.message);
       setShowErrorModal(true);
-    } finally {
-      setIsLoading(false);
     }
   };
+
+  /* FUNCTION GENDER AND PHYSICAL ACTIVITY */
+
+  const gender = (gender) => {
+    if (gender === "MALE") {
+      return "Maschio";
+    } else if (gender === "FEMALE") {
+      return "Femmina";
+    } else {
+      return "Altro";
+    }
+  };
+
+  const physicalActivity = (physical_activity) => {
+    if (physical_activity === "SEDENTARY") {
+      return "Sedentario";
+    } else if (physical_activity === "MODERATELY_ACTIVE") {
+      return "Moderatamente attivo";
+    } else {
+      return "Attivo";
+    }
+  };
+
+  /* FUCTION SUCCESS MODAL */
 
   const handleSuccessDeleteModalClose = () => {
     setShowSuccessDeleteModal(false);
@@ -127,6 +214,14 @@ function UserdetailsComponent() {
     window.location.reload();
   };
 
+  const handleSuccessPutUserModalClose = () => {
+    setShowSuccessPutUserModal(false);
+    navigate("/userdetails");
+    window.location.reload();
+  };
+
+  /* FUNCTION CLOSE MODAL */
+
   const handleCloseLogoutModal = () => {
     setShowLogoutModal(false);
   };
@@ -134,8 +229,13 @@ function UserdetailsComponent() {
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
   };
+
   const handleCloseUploadImageModal = () => {
     setShowUploadImageModal(false);
+  };
+
+  const handleClosePutUserModal = () => {
+    setShowPutUserModal(false);
   };
 
   return (
@@ -255,7 +355,10 @@ function UserdetailsComponent() {
                 </Button>
               </Col>
               <Col className="d-flex justify-content-around  align-items-center">
-                <Button className="custom-button-primary">
+                <Button
+                  className="custom-button-primary"
+                  onClick={handleShowPutUserModal}
+                >
                   <i className="bi bi-pencil"></i> Modifica
                 </Button>
                 <Button
@@ -331,6 +434,119 @@ function UserdetailsComponent() {
         )}
       </Modal>
 
+      {/* MODAL PUT */}
+
+      {/* MODAL PUT */}
+      <Modal show={showPutUserModal} onHide={handleClosePutUserModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modifica profilo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleEditSubmit}>
+            <Form.Group controlId="formName">
+              <Form.Label>Nome</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                value={editFormData.name}
+                onChange={handleEditFormChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formSurname">
+              <Form.Label>Cognome</Form.Label>
+              <Form.Control
+                type="text"
+                name="surname"
+                value={editFormData.surname}
+                onChange={handleEditFormChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                value={editFormData.email}
+                onChange={handleEditFormChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                value={editFormData.password}
+                onChange={handleEditFormChange}
+                placeholder="Inserisci la password modificata o quella attuale"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formDateOfBirth">
+              <Form.Label>Data di nascita</Form.Label>
+              <Form.Control
+                type="date"
+                name="date_of_birth"
+                value={editFormData.date_of_birth}
+                onChange={handleEditFormChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formGender">
+              <Form.Label>Genere</Form.Label>
+              <Form.Select
+                name="gender"
+                value={editFormData.gender}
+                onChange={handleEditFormChange}
+              >
+                <option value="MALE">Maschio</option>
+                <option value="FEMALE">Femmina</option>
+                <option value="OTHER">Altro</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group controlId="formPhysicalActivity">
+              <Form.Label>Attività fisica</Form.Label>
+              <Form.Select
+                name="physical_activity"
+                value={editFormData.physical_activity}
+                onChange={handleEditFormChange}
+              >
+                <option value="SEDENTARY">Sedentario</option>
+                <option value="MODERATELY_ACTIVE">Moderatamente attivo</option>
+                <option value="ACTIVE">Attivo</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group controlId="formNationality">
+              <Form.Label>Nazionalità</Form.Label>
+              <Form.Control
+                type="text"
+                name="nationality"
+                value={editFormData.nationality}
+                onChange={handleEditFormChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formCityOfResidence">
+              <Form.Label>Comune di residenza</Form.Label>
+              <Form.Control
+                type="text"
+                name="city_of_residence"
+                value={editFormData.city_of_residence}
+                onChange={handleEditFormChange}
+              />
+            </Form.Group>
+
+            <Button type="submit" className="custom-button-primary">
+              Salva
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
       {/* MODAL DELETE */}
 
       <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
@@ -361,6 +577,18 @@ function UserdetailsComponent() {
           <Modal.Title>Successo</Modal.Title>
         </Modal.Header>
         <Modal.Body>Hai eliminato l&apos;account con successo!</Modal.Body>
+      </Modal>
+
+      {/* SUCCESS MODAL PUT */}
+
+      <Modal
+        show={showSuccessPutUserModal}
+        onHide={handleSuccessPutUserModalClose}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Successo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Hai modificato l&apos;account con successo!</Modal.Body>
       </Modal>
 
       {/* SUCCESS MODAL UPLOAD IMAGE */}
