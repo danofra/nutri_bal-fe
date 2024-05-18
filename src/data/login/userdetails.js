@@ -1,16 +1,12 @@
 const token = localStorage.getItem("token");
 export const userDetailsGet = () => {
-  return fetch(
-    "http://localhost:3001/user/me",
-    "https://nutri-bal.vercel.app/user/me",
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  )
+  return fetch("http://localhost:3001/user/me", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
     .then((response) => {
       if (!response.ok) {
         throw new Error("Error during the loading of the user details!");

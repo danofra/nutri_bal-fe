@@ -10,28 +10,24 @@ export const singin = (
   city_of_residence,
   robot
 ) => {
-  return fetch(
-    "http://localhost:3001/auth/register",
-    "https://nutri-bal.vercel.app/auth/register",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        surname,
-        email,
-        password,
-        date_of_birth,
-        gender,
-        physical_activity,
-        nationality,
-        city_of_residence,
-        robot,
-      }),
-    }
-  )
+  return fetch("http://localhost:3001/auth/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      surname,
+      email,
+      password,
+      date_of_birth,
+      gender,
+      physical_activity,
+      nationality,
+      city_of_residence,
+      robot,
+    }),
+  })
     .then((response) => {
       if (response.ok) {
         return response.json();
