@@ -1,12 +1,22 @@
-import { Container, Navbar, Offcanvas } from "react-bootstrap";
+import { Container, Navbar, Offcanvas, Button, Image } from "react-bootstrap";
 import { BiCaretRight } from "react-icons/bi";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { userDetailsGet } from "../../data/login/userdetails";
 
 function NavbarComponent() {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const [userData, setUserData] = useState([]);
   const [showAlimentiSubMenu, setShowAlimentiSubMenu] = useState(false);
   const [showRicettarioSubMenu, setShowRicettarioSubMenu] = useState(false);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    userDetailsGet()
+      .then((data) => setUserData(data))
+      .catch((error) => Error(error));
+  }, []);
 
   const handleShow = () => setShow(true);
   const handleClose = () => {
@@ -22,6 +32,13 @@ function NavbarComponent() {
     setShowRicettarioSubMenu(!showRicettarioSubMenu);
     setShowAlimentiSubMenu(false);
   };
+  const handleUser = () => {
+    if (token) {
+      navigate("/userdetails");
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <>
@@ -34,9 +51,7 @@ function NavbarComponent() {
       >
         <Container>
           <Link onClick={handleShow} className="navbar-brand link-navbar">
-            <h1>
-              <i className="bi bi-list"></i>
-            </h1>
+            <i className="bi bi-list icon-navbar"></i>
           </Link>
           <Offcanvas
             show={show}
@@ -109,38 +124,31 @@ function NavbarComponent() {
               </div>
             </Offcanvas.Body>
           </Offcanvas>
-          <Link
-            to="/calendar"
-            className="navbar-brand link-navbar"
-          >
-            <h1>
-              <i className="bi bi-calendar4-week"></i>
-            </h1>
+          <Link to="/calendar" className="navbar-brand link-navbar">
+            <i className="bi bi-calendar4-week icon-navbar"></i>
           </Link>
-          <Link
-            to="/"
-            className="navbar-brand link-navbar"
-          >
-            <h1>
-              <i className="bi bi-house"></i>
-            </h1>
+          <Link to="/" className="navbar-brand link-navbar">
+            <i className="bi bi-house icon-navbar"></i>
           </Link>
-          <Link
-            to="/shoppingbasket"
-            className="navbar-brand link-navbar"
-          >
-            <h1>
-              <i className="bi bi-basket3"></i>
-            </h1>
+          <Link to="/shoppingbasket" className="navbar-brand link-navbar ">
+            <i className="bi bi-basket3 icon-navbar "></i>
           </Link>
-          <Link
-            to="/login"
-            className="navbar-brand link-navbar"
-          >
-            <h1>
-              <i className="bi bi-person-circle"></i>
-            </h1>
-          </Link>
+          {token ? (
+            <Image
+              src={userData.avatar}
+              className="navbar-brand link-navbar image-navbar"
+              onClick={handleUser}
+            />
+          ) : (
+            <Button
+              className="navbar-brand link-navbar button-navbar"
+              onClick={handleUser}
+            >
+              <h1>
+                <i className="bi bi-person-circle"></i>
+              </h1>
+            </Button>
+          )}
         </Container>
       </Navbar>
     </>

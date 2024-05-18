@@ -11,7 +11,7 @@ import {
 import { singin } from "../../data/login/singin";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginComponent from "./LoginComponent";
+/* import LoginComponent from "./LoginComponent"; */
 
 function SinginComponent() {
   const initialState = {
@@ -30,7 +30,6 @@ function SinginComponent() {
   const [formData, setFormData] = useState(initialState);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -48,7 +47,6 @@ function SinginComponent() {
     setIsLoading(true);
     setShowSuccessModal(false);
     setShowErrorModal(false);
-    setShowLoginModal(false);
     setError(null);
 
     try {
@@ -76,16 +74,12 @@ function SinginComponent() {
 
   const handleSuccessModal = () => {
     setShowSuccessModal(false);
-    setShowLoginModal(true);
+    navigate("/login");
   };
 
   const handleErrorModal = () => {
     setShowErrorModal(false);
     navigate("/");
-  };
-
-  const handleLoginModal = () => {
-    setShowLoginModal(false);
   };
 
   return (
@@ -95,15 +89,6 @@ function SinginComponent() {
           <Modal.Title>Successo</Modal.Title>
         </Modal.Header>
         <Modal.Body>Registrazione avvenuta con successo!</Modal.Body>
-      </Modal>
-
-      <Modal show={showLoginModal} onHide={handleLoginModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Accedi</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <LoginComponent />
-        </Modal.Body>
       </Modal>
 
       <Modal show={showErrorModal} onHide={handleErrorModal}>

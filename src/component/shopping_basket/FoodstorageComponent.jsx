@@ -113,7 +113,7 @@ function FoodstorageComponent() {
                             setDeleteItem(item.product.name);
                           }}
                         >
-                          <i className="bi bi-eraser"></i>
+                          <i className="bi bi-trash"></i>
                         </Button>
                       </Col>
                     </Row>

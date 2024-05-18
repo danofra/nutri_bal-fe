@@ -10,7 +10,6 @@ function LoginComponent() {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -35,24 +34,11 @@ function LoginComponent() {
   const handleSuccessModalClose = () => {
     setShowSuccessModal(false);
     navigate("/");
+    window.location.reload();
   };
 
   return (
     <>
-      <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Successo</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Accesso effettuato con successo!</Modal.Body>
-      </Modal>
-
-      <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
-        <Modal.Header closeButton className="modal-header-error">
-          <Modal.Title>Errore</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{error}</Modal.Body>
-      </Modal>
-
       <Container className="mt-5 log-container">
         <Row className="justify-content-center">
           <Col md={6}>
@@ -114,6 +100,24 @@ function LoginComponent() {
           </Col>
         </Row>
       </Container>
+
+      {/* SUCCESS MODAL */}
+
+      <Modal show={showSuccessModal} onHide={handleSuccessModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Successo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Accesso effettuato con successo!</Modal.Body>
+      </Modal>
+
+      {/* ERROR MODAL */}
+
+      <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
+        <Modal.Header closeButton className="modal-header-error">
+          <Modal.Title>Errore</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{error}</Modal.Body>
+      </Modal>
     </>
   );
 }

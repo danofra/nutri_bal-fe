@@ -90,6 +90,14 @@ a {
   right: 30px;
   width: 90%;
 }
+.image-navbar {
+  border-radius: 100%;
+  cursor: pointer;
+  width: 40px;
+}
+.icon-navbar {
+  font-size: 35px;
+}
 
 /* HOME */
 
@@ -142,6 +150,13 @@ a {
 .day-of-week {
   margin-top: 5px;
   font-size: 14px;
+}
+
+/* USER DETAILS */
+
+.font-span {
+  font-size: 15px;
+  color: rgb(123, 131, 131);
 }
 
 /* BUTTON */
@@ -241,6 +256,16 @@ a {
 }
 .custom-button-quintary:active {
   background-color: #621010 !important;
+}
+.button-navbar {
+  background-color: #9acd33;
+  border: none;
+}
+.button-navbar:hover {
+  background-color: #9acd33;
+}
+.button-navbar:active {
+  background-color: #9acd33 !important;
 }
 .custom-checkbox .form-check-input:checked {
   background-color: yellowgreen;

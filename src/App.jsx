@@ -19,6 +19,7 @@ import ShoppinglistComponent from "./component/shopping_basket/ShoppinglistCompo
 import CalendarComponent from "./component/calendar/CalendarComponent.jsx";
 import FoodpyramidComponent from "./component/listmenu/FoodpyramidComponent.jsx";
 import LoginComponent from "./component/login/LoginComponent.jsx";
+import UserdetailsComponent from "./component/login/UserdetailsComponent.jsx";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             <Route path="/shoppinglist" element={<ShoppinglistComponent />} />
             <Route path="/calendar" element={<CalendarComponent />} />
             <Route path="/foodpyramid" element={<FoodpyramidComponent />} />
+            <Route path="/userdetails" element={<UserdetailsComponent />} />
           </Routes>
         </main>
         <footer></footer>
