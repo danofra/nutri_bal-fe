@@ -257,6 +257,26 @@ a {
 .custom-button-quintary:active {
   background-color: #621010 !important;
 }
+.custom-button-sextiary {
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #621010;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+.custom-button-sextiary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  background-color: red;
+}
+.custom-button-sextiary:active {
+  background-color: red !important;
+}
 .button-navbar {
   background-color: #9acd33;
   border: none;

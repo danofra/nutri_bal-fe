@@ -346,7 +346,7 @@ function UserdetailsComponent() {
             <>
               <Col className="d-flex justify-content-center align-items-center">
                 <Button
-                  className="custom-button-secondary"
+                  className="custom-button-sextiary"
                   onClick={() => {
                     setShowLogoutModal(true);
                   }}
@@ -392,7 +392,7 @@ function UserdetailsComponent() {
             Annulla
           </Button>
           <Button className="custom-button-primary" onClick={logout}>
-            Salva
+            Conferma
           </Button>
         </Modal.Footer>
       </Modal>
@@ -428,13 +428,11 @@ function UserdetailsComponent() {
               className="custom-button-primary"
               onClick={handleUploadImage}
             >
-              Salva
+              Conferma
             </Button>
           </Modal.Footer>
         )}
       </Modal>
-
-      {/* MODAL PUT */}
 
       {/* MODAL PUT */}
       <Modal show={showPutUserModal} onHide={handleClosePutUserModal}>
@@ -442,7 +440,7 @@ function UserdetailsComponent() {
           <Modal.Title>Modifica profilo</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleEditSubmit}>
+          <Form>
             <Form.Group controlId="formName">
               <Form.Label>Nome</Form.Label>
               <Form.Control
@@ -452,9 +450,8 @@ function UserdetailsComponent() {
                 onChange={handleEditFormChange}
               />
             </Form.Group>
-
             <Form.Group controlId="formSurname">
-              <Form.Label>Cognome</Form.Label>
+              <Form.Label className="mt-2">Cognome</Form.Label>
               <Form.Control
                 type="text"
                 name="surname"
@@ -462,9 +459,8 @@ function UserdetailsComponent() {
                 onChange={handleEditFormChange}
               />
             </Form.Group>
-
             <Form.Group controlId="formEmail">
-              <Form.Label>Email</Form.Label>
+              <Form.Label className="mt-2">Email</Form.Label>
               <Form.Control
                 type="email"
                 name="email"
@@ -472,9 +468,8 @@ function UserdetailsComponent() {
                 onChange={handleEditFormChange}
               />
             </Form.Group>
-
             <Form.Group controlId="formPassword">
-              <Form.Label>Password</Form.Label>
+              <Form.Label className="mt-2">Password</Form.Label>
               <Form.Control
                 type="password"
                 name="password"
@@ -483,9 +478,8 @@ function UserdetailsComponent() {
                 placeholder="Inserisci la password modificata o quella attuale"
               />
             </Form.Group>
-
             <Form.Group controlId="formDateOfBirth">
-              <Form.Label>Data di nascita</Form.Label>
+              <Form.Label className="mt-2">Data di nascita</Form.Label>
               <Form.Control
                 type="date"
                 name="date_of_birth"
@@ -493,9 +487,8 @@ function UserdetailsComponent() {
                 onChange={handleEditFormChange}
               />
             </Form.Group>
-
             <Form.Group controlId="formGender">
-              <Form.Label>Genere</Form.Label>
+              <Form.Label className="mt-2">Genere</Form.Label>
               <Form.Select
                 name="gender"
                 value={editFormData.gender}
@@ -506,9 +499,8 @@ function UserdetailsComponent() {
                 <option value="OTHER">Altro</option>
               </Form.Select>
             </Form.Group>
-
             <Form.Group controlId="formPhysicalActivity">
-              <Form.Label>Attività fisica</Form.Label>
+              <Form.Label className="mt-2">Attività fisica</Form.Label>
               <Form.Select
                 name="physical_activity"
                 value={editFormData.physical_activity}
@@ -519,9 +511,8 @@ function UserdetailsComponent() {
                 <option value="ACTIVE">Attivo</option>
               </Form.Select>
             </Form.Group>
-
             <Form.Group controlId="formNationality">
-              <Form.Label>Nazionalità</Form.Label>
+              <Form.Label className="mt-2">Nazionalità</Form.Label>
               <Form.Control
                 type="text"
                 name="nationality"
@@ -529,9 +520,8 @@ function UserdetailsComponent() {
                 onChange={handleEditFormChange}
               />
             </Form.Group>
-
             <Form.Group controlId="formCityOfResidence">
-              <Form.Label>Comune di residenza</Form.Label>
+              <Form.Label className="mt-2">Comune di residenza</Form.Label>
               <Form.Control
                 type="text"
                 name="city_of_residence"
@@ -539,12 +529,24 @@ function UserdetailsComponent() {
                 onChange={handleEditFormChange}
               />
             </Form.Group>
-
-            <Button type="submit" className="custom-button-primary">
-              Salva
-            </Button>
           </Form>
         </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="submit"
+            className="custom-button-secondary"
+            onClick={handleClosePutUserModal}
+          >
+            Annulla
+          </Button>
+          <Button
+            type="submit"
+            className="custom-button-primary"
+            onClick={handleEditSubmit}
+          >
+            Conferma
+          </Button>
+        </Modal.Footer>
       </Modal>
 
       {/* MODAL DELETE */}
@@ -562,7 +564,7 @@ function UserdetailsComponent() {
             Annulla
           </Button>
           <Button className="custom-button-primary" onClick={userDelete}>
-            Salva
+            Conferma
           </Button>
         </Modal.Footer>
       </Modal>
