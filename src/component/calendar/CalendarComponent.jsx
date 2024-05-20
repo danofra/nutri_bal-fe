@@ -32,7 +32,9 @@ function CalendarComponent() {
   const [selectedMealType, setSelectedMealType] = useState("");
   const [mealDescription, setMealDescription] = useState("");
   const [mealQuantity, setMealQuantity] = useState(1);
+  const [selectedUnitOfMeasure, setSelectedUnitOfMeasure] = useState("");
   const [newEditQuantity, setNewEditQuantity] = useState(0);
+  const [newEditUnitOfMeasure, setNewEditUnitOfMeasure] = useState("");
   const [editMealsQuantityId, setEditMealsQuantityId] = useState(0);
   const [deleteMealsQuantityId, setDeleteMealsQuantityId] = useState(0);
   const [deleteMealsQuantityName, setDeleteMealsQuantityName] = useState("");
@@ -55,9 +57,10 @@ function CalendarComponent() {
       month: selectedMonth + 1,
       year: selectedYear,
       day: selectedDay,
-      type_meals: selectedMealType,
+      type_meals: translateMealTypeForBackend(selectedMealType),
       productName: mealDescription,
       quantity: mealQuantity,
+      unit_of_measure: selectedUnitOfMeasure,
     };
     await newMealsPost(data);
     handleClosePostModal();
@@ -67,7 +70,7 @@ function CalendarComponent() {
   /* FETCH PUT */
 
   const handlePutMeal = async () => {
-    await mealsPut(editMealsQuantityId, newEditQuantity);
+    await mealsPut(editMealsQuantityId, newEditQuantity, newEditUnitOfMeasure);
     handleClosePutModal();
     fetchMealData();
   };
@@ -85,6 +88,26 @@ function CalendarComponent() {
     { length: daysInMonth },
     (_, index) => index + 1
   );
+
+  const typeMeals = (type_meals) => {
+    if (type_meals === "LUNCH") {
+      return "PRANZO";
+    } else if (type_meals === "DINNER") {
+      return "CENA";
+    } else if (type_meals === "BREAKFAST") {
+      return "COLAZIONE";
+    }
+  };
+
+  const translateMealTypeForBackend = (translatedType) => {
+    if (translatedType === "PRANZO") {
+      return "LUNCH";
+    } else if (translatedType === "CENA") {
+      return "DINNER";
+    } else if (translatedType === "COLAZIONE") {
+      return "BREAKFAST";
+    }
+  };
 
   /* OPEN MODAL */
 
@@ -122,7 +145,7 @@ function CalendarComponent() {
         </Row>
 
         {/* CALENDAR */}
-        
+
         <Row className="select-container">
           <Col>
             <select
@@ -132,9 +155,13 @@ function CalendarComponent() {
             >
               {[...Array(12).keys()].map((month) => (
                 <option key={month} value={month}>
-                  {new Date(2000, month).toLocaleString("it-IT", {
-                    month: "long",
-                  })}
+                  {new Date(2000, month)
+                    .toLocaleString("it-IT", { month: "long" })
+                    .charAt(0)
+                    .toUpperCase() +
+                    new Date(2000, month)
+                      .toLocaleString("it-IT", { month: "long" })
+                      .slice(1)}
                 </option>
               ))}
             </select>
@@ -168,7 +195,11 @@ function CalendarComponent() {
                     {day}
                   </Col>
                 </Row>
-                {["BREAKFAST", "LUNCH", "DINNER"].map((mealType) => (
+                {[
+                  typeMeals("BREAKFAST"),
+                  typeMeals("LUNCH"),
+                  typeMeals("DINNER"),
+                ].map((mealType) => (
                   <Row
                     key={mealType}
                     className="justify-content-start align-items-center"
@@ -198,48 +229,52 @@ function CalendarComponent() {
                           mealData
                             .filter(
                               (item) =>
-                                item.type_meals === mealType && item.day === day
+                                item.type_meals ===
+                                  translateMealTypeForBackend(mealType) &&
+                                item.day === day
                             )
                             .map((item, index) => (
                               <div key={index}>
-                                <>
-                                  {item.mealsQuantity.map((meal, index) => (
-                                    <div
-                                      className="d-flex justify-content-between"
-                                      key={index}
-                                    >
-                                      <div>
-                                        <li className="border-bottom border-1">
-                                          {meal.quantity} - {meal.product.name}
-                                        </li>
-                                      </div>
-                                      <div>
-                                        <Button
-                                          className="custom-button-quaternary"
-                                          onClick={() => {
-                                            setShowPutModal(true);
-                                            setEditMealsQuantityId(meal.id);
-                                            setNewEditQuantity(meal.quantity);
-                                          }}
-                                        >
-                                          <i className="bi bi-pencil"></i>
-                                        </Button>
-                                        <Button
-                                          className="custom-button-quintary"
-                                          onClick={() => {
-                                            setShowDeleteModal(true);
-                                            setDeleteMealsQuantityId(meal.id);
-                                            setDeleteMealsQuantityName(
-                                              meal.product.name
-                                            );
-                                          }}
-                                        >
-                                          <i className="bi bi-trash"></i>
-                                        </Button>
-                                      </div>
+                                {item.mealsQuantity.map((meal, index) => (
+                                  <div
+                                    className="d-flex justify-content-between align-items-center border-bottom border-2"
+                                    key={index}
+                                  >
+                                    <div className="mb-1 mt-1">
+                                      <li>
+                                        {meal.quantity} {meal.unit_of_measure} -{" "}
+                                        {meal.product.name}
+                                      </li>
                                     </div>
-                                  ))}
-                                </>
+                                    <div className="mb-1 mt-1">
+                                      <Button
+                                        className="custom-button-quaternary me-1"
+                                        onClick={() => {
+                                          setShowPutModal(true);
+                                          setEditMealsQuantityId(meal.id);
+                                          setNewEditQuantity(meal.quantity);
+                                          setNewEditUnitOfMeasure(
+                                            meal.unit_of_measure
+                                          );
+                                        }}
+                                      >
+                                        <i className="bi bi-pencil"></i>
+                                      </Button>
+                                      <Button
+                                        className="custom-button-quintary"
+                                        onClick={() => {
+                                          setShowDeleteModal(true);
+                                          setDeleteMealsQuantityId(meal.id);
+                                          setDeleteMealsQuantityName(
+                                            meal.product.name
+                                          );
+                                        }}
+                                      >
+                                        <i className="bi bi-trash"></i>
+                                      </Button>
+                                    </div>
+                                  </div>
+                                ))}
                               </div>
                             ))}
                       </ul>
@@ -277,6 +312,23 @@ function CalendarComponent() {
               onChange={(e) => setMealQuantity(parseInt(e.target.value))}
             />
           </Form.Group>
+          <Form.Group controlId="mealUnitOfMeasure">
+            <Form.Label>Unità di misura</Form.Label>
+            <Form.Control
+              as="select"
+              name="unit_of_measure"
+              value={selectedUnitOfMeasure}
+              onChange={(e) => setSelectedUnitOfMeasure(e.target.value)}
+            >
+              <option value="">Seleziona l&apos;unità di misura</option>
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="pz">pz</option>
+              <option value="ml">ml</option>
+              <option value="cl">cl</option>
+              <option value="l">l</option>
+            </Form.Control>
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button
@@ -294,7 +346,7 @@ function CalendarComponent() {
       {/* MODAL DELETE */}
 
       <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className="modal-header-error">
           <Modal.Title>Conferma eliminazione</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -321,14 +373,34 @@ function CalendarComponent() {
           <Modal.Title>Modifica quantità</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Control
-            type="number"
-            placeholder="Aggiungi quantità"
-            className=" me-2 "
-            style={{ width: "100%" }}
-            value={newEditQuantity}
-            onChange={(e) => setNewEditQuantity(parseInt(e.target.value))}
-          />
+          <Form.Group controlId="newEditQuantity">
+            <Form.Label>Quantità</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Aggiungi quantità"
+              className=" me-2 "
+              style={{ width: "100%" }}
+              value={newEditQuantity}
+              onChange={(e) => setNewEditQuantity(parseInt(e.target.value))}
+            />
+          </Form.Group>
+          <Form.Group controlId="newEditUnitOfMeasure" className="mt-2">
+            <Form.Label>Unità di misura</Form.Label>
+            <Form.Control
+              as="select"
+              name="unit_of_measure"
+              value={newEditUnitOfMeasure}
+              onChange={(e) => setNewEditUnitOfMeasure(e.target.value)}
+            >
+              <option value="">Seleziona l&apos;unità di misura</option>
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="pz">pz</option>
+              <option value="ml">ml</option>
+              <option value="cl">cl</option>
+              <option value="l">l</option>
+            </Form.Control>
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button

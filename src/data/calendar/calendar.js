@@ -2,6 +2,7 @@ const token = localStorage.getItem("token");
 export const newMealsPost = (
   productName,
   quantity,
+  unit_of_measure,
   type_meals,
   day,
   month,
@@ -13,7 +14,15 @@ export const newMealsPost = (
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(productName, quantity, type_meals, day, month, year),
+    body: JSON.stringify(
+      productName,
+      quantity,
+      unit_of_measure,
+      type_meals,
+      day,
+      month,
+      year
+    ),
   })
     .then((response) => {
       if (!response.ok) {
@@ -25,6 +34,7 @@ export const newMealsPost = (
     .then((data) => {
       productName = data.productName;
       quantity = data.quantity;
+      unit_of_measure = data.unit_of_measure;
       type_meals = data.type_meals;
       day = data.day;
       month = data.month;
@@ -59,9 +69,9 @@ export const mealsGet = (month, year) => {
     });
 };
 
-export const mealsPut = (mealsQuantityId, quantity) => {
+export const mealsPut = (mealsQuantityId, quantity, unitOfMeasure) => {
   return fetch(
-    `http://localhost:3001/mealsquantity/me/${mealsQuantityId}?quantity=${quantity}`,
+    `http://localhost:3001/mealsquantity/me/${mealsQuantityId}?quantity=${quantity}&unitOfMeasure=${unitOfMeasure}`,
     {
       method: "PUT",
       headers: {
