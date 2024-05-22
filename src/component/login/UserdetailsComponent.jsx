@@ -256,7 +256,7 @@ function UserdetailsComponent() {
                   height={200}
                 />
               </Col>
-              <Col className="d-flex justify-content-center align-items-center">
+              <Col className="d-flex justify-content-center align-items-center mb-2">
                 <Button
                   className="custom-button-primary"
                   onClick={setShowUploadImageModal}
@@ -354,12 +354,12 @@ function UserdetailsComponent() {
                   <i className="bi bi-x-circle"></i> Esci
                 </Button>
               </Col>
-              <Col className="d-flex justify-content-around  align-items-center">
+              <Col className="d-flex justify-content-around align-items-center">
                 <Button
                   className="custom-button-primary"
                   onClick={handleShowPutUserModal}
                 >
-                  <i className="bi bi-pencil"></i> Modifica
+                  <i className="bi bi-pencil"></i>
                 </Button>
                 <Button
                   className="custom-button-secondary"
@@ -367,7 +367,7 @@ function UserdetailsComponent() {
                     setShowDeleteModal(true);
                   }}
                 >
-                  <i className="bi bi-trash"></i> Elimina
+                  <i className="bi bi-trash"></i>
                 </Button>
               </Col>
             </>
@@ -435,6 +435,7 @@ function UserdetailsComponent() {
       </Modal>
 
       {/* MODAL PUT */}
+
       <Modal show={showPutUserModal} onHide={handleClosePutUserModal}>
         <Modal.Header closeButton>
           <Modal.Title>Modifica profilo</Modal.Title>
@@ -553,7 +554,7 @@ function UserdetailsComponent() {
 
       <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
         <Modal.Header closeButton className="modal-header-error">
-          <Modal.Title>Conferma logout</Modal.Title>
+          <Modal.Title>Conferma eliminazone account</Modal.Title>
         </Modal.Header>
         <Modal.Body>Sei sicuro di voler eliminare il tuo account?</Modal.Body>
         <Modal.Footer>

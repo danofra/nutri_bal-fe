@@ -1,5 +1,4 @@
 import { Container, Navbar, Offcanvas, Button, Image } from "react-bootstrap";
-import { BiCaretRight } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { userDetailsGet } from "../../data/login/userdetails";
@@ -9,7 +8,6 @@ function NavbarComponent() {
   const [show, setShow] = useState(false);
   const [userData, setUserData] = useState([]);
   const [showAlimentiSubMenu, setShowAlimentiSubMenu] = useState(false);
-  const [showRicettarioSubMenu, setShowRicettarioSubMenu] = useState(false);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -22,16 +20,11 @@ function NavbarComponent() {
   const handleClose = () => {
     setShow(false);
     setShowAlimentiSubMenu(false);
-    setShowRicettarioSubMenu(false);
   };
   const handleToggleAlimentiSubMenu = () => {
     setShowAlimentiSubMenu(!showAlimentiSubMenu);
-    setShowRicettarioSubMenu(false);
   };
-  const handleToggleRicettarioSubMenu = () => {
-    setShowRicettarioSubMenu(!showRicettarioSubMenu);
-    setShowAlimentiSubMenu(false);
-  };
+
   const handleUser = () => {
     if (token) {
       navigate("/userdetails");
@@ -74,9 +67,13 @@ function NavbarComponent() {
                   onClick={handleToggleAlimentiSubMenu}
                 >
                   <span>Alimenti</span>
-                  <BiCaretRight
-                    className={showAlimentiSubMenu ? "rotate-icon" : ""}
-                  />
+                  <i
+                    className={
+                      showAlimentiSubMenu
+                        ? "bi bi-caret-down-fill"
+                        : "bi bi-caret-right-fill"
+                    }
+                  ></i>
                 </div>
                 {showAlimentiSubMenu && (
                   <ul className="submenu mt-2">
@@ -103,24 +100,6 @@ function NavbarComponent() {
                   </ul>
                 )}
                 <hr />
-                <div
-                  className="menu-item"
-                  onClick={handleToggleRicettarioSubMenu}
-                >
-                  <span>Ricettario</span>
-                  <BiCaretRight
-                    className={showRicettarioSubMenu ? "rotate-icon" : ""}
-                  />
-                </div>
-                {showRicettarioSubMenu && (
-                  <ul className="submenu mt-2 ">
-                    <li>
-                      <a href="#ricettario" onClick={handleClose}>
-                        Il mio Ricettario
-                      </a>
-                    </li>
-                  </ul>
-                )}
               </div>
             </Offcanvas.Body>
           </Offcanvas>

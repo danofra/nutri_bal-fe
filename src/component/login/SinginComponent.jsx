@@ -101,7 +101,7 @@ function SinginComponent() {
       <Container className="mt-5 log-container">
         <div className="text-center">
           <h2>Registrazione</h2>
-        </div>  
+        </div>
         <Form onSubmit={handleSubmit}>
           <Row className="mt-5">
             <Form.Group as={Col} controlId="name">
@@ -227,7 +227,7 @@ function SinginComponent() {
               <FormCheck
                 type="checkbox"
                 name="robot"
-                label="No! Non sono un robot"
+                label="Non sono un robot"
                 checked={formData.robot}
                 onChange={handleChange}
                 required

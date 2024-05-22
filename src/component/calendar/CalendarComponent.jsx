@@ -89,6 +89,8 @@ function CalendarComponent() {
     (_, index) => index + 1
   );
 
+  /* FUNCTION TO CONVERT ENUM */
+
   const typeMeals = (type_meals) => {
     if (type_meals === "LUNCH") {
       return "PRANZO";
@@ -287,7 +289,7 @@ function CalendarComponent() {
         </Row>
       </Container>
 
-      {/* MODAL ADD MEALS */}
+      {/* MODAL POST */}
 
       <Modal show={showPostModal} onHide={handleClosePostModal}>
         <Modal.Header closeButton>

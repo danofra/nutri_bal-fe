@@ -181,7 +181,7 @@ function ShoppinglistComponent() {
             </Button>
           </Col>
         </Row>
-        <Row className="mt-3">
+        <Row className="mt-3" style={{ height: "500px", overflowY: "scroll" }}>
           <h3 className="text-center">Lista della spesa</h3>
           {isLoading ? (
             <div className="d-flex justify-content-center align-items-center">
@@ -228,7 +228,7 @@ function ShoppinglistComponent() {
             ))
           ) : (
             <div className="text-center">
-              <p>Nessun elemento in lista. Creane una nuova!</p>
+              <p>Nessun prodotto nella lista della spesa!</p>
             </div>
           )}
         </Row>
@@ -254,7 +254,7 @@ function ShoppinglistComponent() {
 
       {/* MODAL DELETE */}
       <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className="modal-header-error">
           <Modal.Title>Conferma eliminazione</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -269,12 +269,13 @@ function ShoppinglistComponent() {
             Annulla
           </Button>
           <Button className="custom-button-primary" onClick={handleDeleteItem}>
-            Salva
+            Conferma
           </Button>
         </Modal.Footer>
       </Modal>
 
       {/* MODAL PATCH */}
+
       <Modal show={showPatchModal} onHide={handleClosePatchModal}>
         <Modal.Header closeButton>
           <Modal.Title>Modifica quantità</Modal.Title>
@@ -300,7 +301,7 @@ function ShoppinglistComponent() {
             className="custom-button-primary"
             onClick={handleEditQuantity}
           >
-            Salva
+            Conferma
           </Button>
         </Modal.Footer>
       </Modal>

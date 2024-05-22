@@ -50,19 +50,6 @@ const ServicesectionComponent = () => {
                   <li>
                     <h4>
                       <i className="bi bi-arrow-right-short"></i>
-                      Ricettario (?)
-                    </h4>
-                    <p>
-                      Creare un ricettario personalizzato, tramite un opposta
-                      sezione che consente di aggiungere, raggruppare e mettere
-                      in elenco le ricette. La pagina dedicata alla ricetta,
-                      offre la possibilità di aggiungere una lista ingredienti,
-                      descrizione, foto e link.
-                    </p>
-                  </li>
-                  <li>
-                    <h4>
-                      <i className="bi bi-arrow-right-short"></i>
                       Ulteriori funzionalità
                     </h4>
                     <p>

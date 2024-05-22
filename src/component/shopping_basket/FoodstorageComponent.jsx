@@ -22,6 +22,29 @@ function FoodstorageComponent() {
   const [showPutModal, setShowPutModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  /* FUNCTION CATEGORY */
+
+  const handleCategoryClick = (category) => {
+    if (selectedCategory === category) {
+      setSelectedCategory(null);
+      setMenuOpen(false);
+    } else {
+      setSelectedCategory(category);
+      setMenuOpen(true);
+    }
+  };
+
+  const groupedItems = items.reduce((acc, item) => {
+    const category = item.product.category;
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(item);
+    return acc;
+  }, {});
 
   /* FETCH GET */
 
@@ -64,6 +87,7 @@ function FoodstorageComponent() {
   };
 
   /* CLOSE MODAL */
+
   const handleClosePutModal = () => {
     setShowPutModal(false);
   };
@@ -77,53 +101,75 @@ function FoodstorageComponent() {
       <Container>
         <Row className="mt-3">
           <h3 className="text-center">Dispensa</h3>
-          <Col>
+          <Col style={{ height: "651px", overflowY: "scroll" }}>
             {isLoading ? (
               <div className="d-flex justify-content-center align-items-center">
                 <Spinner animation="border" className="spinner" />
               </div>
-            ) : items && items.length > 0 ? (
-              items.map((item) => (
-                <Card key={item.id} className="mb-1">
-                  <Card.Body className="d-flex justify-content-between align-items-center">
-                    <Card.Title>{item.product.name}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      Categoria: {item.product.category} - Kcal:{" "}
-                      {item.product.kcal}
-                    </Card.Subtitle>
-                  </Card.Body>
-                  <Card.Footer>
-                    <Row className="d-flex justify-content-between align-items-center">
-                      <Col>Quantità: {item.quantity}</Col>
-                      <Col className="d-flex justify-content-end">
-                        <Button
-                          className="me-2 custom-button-primary"
-                          onClick={() => {
-                            setShowPutModal(true);
-                            setNewEditName(item.product.name);
-                            setNewEditQuantity(item.quantity);
-                          }}
-                        >
-                          <i className="bi bi-pencil"></i>
-                        </Button>
-                        <Button
-                          className="custom-button-secondary"
-                          onClick={() => {
-                            setShowDeleteModal(true);
-                            setDeleteItem(item.product.name);
-                          }}
-                        >
-                          <i className="bi bi-trash"></i>
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Card.Footer>
-                </Card>
-              ))
             ) : (
-              <div className="text-center">
-                <p>Nessun elemento nel food storage</p>
-              </div>
+              <>
+                {Object.keys(groupedItems).map((category) => (
+                  <Card key={category} className="mt-3 footstorage-container">
+                    <Card.Body className="d-flex justify-content-between align-items-center">
+                      <Card.Title
+                        className="mt-3"
+                        onClick={() => handleCategoryClick(category)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {category}
+                        {selectedCategory === category && menuOpen && (
+                          <i className={`bi bi-caret-down-fill`}></i>
+                        )}
+                        {(selectedCategory !== category || !menuOpen) && (
+                          <i className={`bi bi-caret-right-fill`}></i>
+                        )}
+                      </Card.Title>
+                    </Card.Body>
+                    {selectedCategory === category &&
+                      groupedItems[category].map((item) => (
+                        <>
+                          <Container className="mb-2">
+                            <Card key={item.id} className="mb-1">
+                              <Card.Body className="d-flex justify-content-between align-items-center">
+                                <Card.Title>{item.product.name}</Card.Title>
+                                <Card.Subtitle className="mb-2 text-muted">
+                                  Categoria: {item.product.category} - Kcal:{" "}
+                                  {item.product.kcal}
+                                </Card.Subtitle>
+                              </Card.Body>
+                              <Card.Footer>
+                                <Row className="d-flex justify-content-between align-items-center">
+                                  <Col>Quantità: {item.quantity}</Col>
+                                  <Col className="d-flex justify-content-end">
+                                    <Button
+                                      className="me-2 custom-button-primary"
+                                      onClick={() => {
+                                        setShowPutModal(true);
+                                        setNewEditName(item.product.name);
+                                        setNewEditQuantity(item.quantity);
+                                      }}
+                                    >
+                                      <i className="bi bi-pencil"></i>
+                                    </Button>
+                                    <Button
+                                      className="custom-button-secondary"
+                                      onClick={() => {
+                                        setShowDeleteModal(true);
+                                        setDeleteItem(item.product.name);
+                                      }}
+                                    >
+                                      <i className="bi bi-trash"></i>
+                                    </Button>
+                                  </Col>
+                                </Row>
+                              </Card.Footer>
+                            </Card>
+                          </Container>
+                        </>
+                      ))}
+                  </Card>
+                ))}
+              </>
             )}
           </Col>
         </Row>
@@ -132,7 +178,7 @@ function FoodstorageComponent() {
       {/* MODAL DELETE */}
 
       <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className="modal-header-error">
           <Modal.Title>Conferma eliminazione</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -147,7 +193,7 @@ function FoodstorageComponent() {
             Annulla
           </Button>
           <Button className="custom-button-primary" onClick={handleDeleteItem}>
-            Salva
+            Conferma
           </Button>
         </Modal.Footer>
       </Modal>
@@ -177,7 +223,7 @@ function FoodstorageComponent() {
             className="custom-button-primary"
             onClick={handleEditQuantity}
           >
-            Salva
+            Conferma
           </Button>
         </Modal.Footer>
       </Modal>

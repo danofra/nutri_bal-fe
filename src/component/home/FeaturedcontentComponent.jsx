@@ -40,7 +40,7 @@ const FeaturedcontentComponent = () => {
     >
       <Row className="text-center mt-4 mb-4">
         <Col className="col-12">
-          <h2>Bibliografica in primo piano</h2>
+          <h2>Biblioteca in primo piano</h2>
         </Col>
         {featuredItems.map((item, index) => (
           <Col
