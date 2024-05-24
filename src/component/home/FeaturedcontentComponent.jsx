@@ -1,4 +1,4 @@
-import { Container, Row, Col, Image, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Card } from "react-bootstrap";
 const FeaturedcontentComponent = () => {
   const featuredItems = [
     {
@@ -46,23 +46,28 @@ const FeaturedcontentComponent = () => {
           {featuredItems.map((item, index) => (
             <Col
               key={index}
-              className="col-6 mt-4 d-flex flex-column align-items-center justify-content-around"
+              className="col-12 col-md-6 col-lg-4 col-xxl-3 mt-4 d-flex flex-column align-items-center justify-content-around"
             >
-              <Image
-                src={item.image}
-                alt={item.title}
-                width={150}
-                height={150}
-              />
-              <h2 className="pt-3">{item.title}</h2>
-              <p>{item.description}</p>
-              <Button
-                className="custom-button-primary"
-                target="_blank"
-                href={item.link}
-              >
-                Acquista
-              </Button>
+              <Card style={{ width: "18rem", height: "36rem" }}>
+                <Card.Img
+                  variant="top"
+                  src={item.image}
+                  alt={item.title}
+                  width={150}
+                  height={300}
+                />
+                <Card.Body className="d-flex flex-column align-items-center justify-content-between">
+                  <Card.Title>{item.title}</Card.Title>
+                  <Card.Text>{item.description}</Card.Text>
+                  <Button
+                    className="custom-button-primary"
+                    target="_blank"
+                    href={item.link}
+                  >
+                    Acquista
+                  </Button>
+                </Card.Body>
+              </Card>
             </Col>
           ))}
         </Row>
