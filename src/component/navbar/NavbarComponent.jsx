@@ -13,15 +13,11 @@ function NavbarComponent() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    // Fetch user details
     userDetailsGet()
       .then((data) => setUserData(data))
       .catch((error) => console.error(error));
-
-    // Fetch product data
     productsGet()
       .then((data) => {
-        console.log(data.content);
         setProductData(data.content);
       })
       .catch((error) => console.error(error));
