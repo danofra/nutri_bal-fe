@@ -108,67 +108,72 @@ function FoodstorageComponent() {
               </div>
             ) : (
               <>
-                {Object.keys(groupedItems).map((category) => (
-                  <Card key={category} className="mt-3 footstorage-container">
-                    <Card.Body className="d-flex justify-content-between align-items-center">
-                      <Card.Title
-                        className="mt-3"
-                        onClick={() => handleCategoryClick(category)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        {category}
-                        {selectedCategory === category && menuOpen && (
-                          <i className={`bi bi-caret-down-fill`}></i>
-                        )}
-                        {(selectedCategory !== category || !menuOpen) && (
-                          <i className={`bi bi-caret-right-fill`}></i>
-                        )}
-                      </Card.Title>
-                    </Card.Body>
-                    {selectedCategory === category &&
-                      groupedItems[category].map((item) => (
-                        <>
-                          <Container className="mb-2">
-                            <Card key={item.id} className="mb-1">
-                              <Card.Body className="d-flex justify-content-between align-items-center">
-                                <Card.Title>{item.product.name}</Card.Title>
-                                <Card.Subtitle className="mb-2 text-muted">
-                                  Categoria: {item.product.category} - Kcal:{" "}
-                                  {item.product.kcal}
-                                </Card.Subtitle>
-                              </Card.Body>
-                              <Card.Footer>
-                                <Row className="d-flex justify-content-between align-items-center">
-                                  <Col>Quantità: {item.quantity}</Col>
-                                  <Col className="d-flex justify-content-end">
-                                    <Button
-                                      className="me-2 custom-button-primary"
-                                      onClick={() => {
-                                        setShowPutModal(true);
-                                        setNewEditName(item.product.name);
-                                        setNewEditQuantity(item.quantity);
-                                      }}
-                                    >
-                                      <i className="bi bi-pencil"></i>
-                                    </Button>
-                                    <Button
-                                      className="custom-button-secondary"
-                                      onClick={() => {
-                                        setShowDeleteModal(true);
-                                        setDeleteItem(item.product.name);
-                                      }}
-                                    >
-                                      <i className="bi bi-trash"></i>
-                                    </Button>
-                                  </Col>
-                                </Row>
-                              </Card.Footer>
-                            </Card>
-                          </Container>
-                        </>
-                      ))}
-                  </Card>
-                ))}
+                {Object.keys(groupedItems).length === 0 ? (
+                  <div className="d-flex justify-content-center align-items-center">
+                    <p>Nessun prodotto nella tua dispensa</p>
+                  </div>
+                ) : (
+                  Object.keys(groupedItems).map((category) => (
+                    <Card key={category} className="mt-3 footstorage-container">
+                      <Card.Body className="d-flex justify-content-between align-items-center">
+                        <Card.Title
+                          className="mt-3"
+                          onClick={() => handleCategoryClick(category)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          {category}
+                          {selectedCategory === category && menuOpen && (
+                            <i className={`bi bi-caret-down-fill`}></i>
+                          )}
+                          {(selectedCategory !== category || !menuOpen) && (
+                            <i className={`bi bi-caret-right-fill`}></i>
+                          )}
+                        </Card.Title>
+                      </Card.Body>
+                      {selectedCategory === category &&
+                        groupedItems[category].map((item) => (
+                          <>
+                            <Container className="mb-2">
+                              <Card key={item.id} className="mb-1">
+                                <Card.Body className="d-flex justify-content-between align-items-center">
+                                  <Card.Title>{item.product.name}</Card.Title>
+                                  <Card.Subtitle className="mb-2 text-muted">
+                                    Kcal: {item.product.kcal}
+                                  </Card.Subtitle>
+                                </Card.Body>
+                                <Card.Footer>
+                                  <Row className="d-flex justify-content-between align-items-center">
+                                    <Col>Quantità: {item.quantity}</Col>
+                                    <Col className="d-flex justify-content-end">
+                                      <Button
+                                        className="me-2 custom-button-primary"
+                                        onClick={() => {
+                                          setShowPutModal(true);
+                                          setNewEditName(item.product.name);
+                                          setNewEditQuantity(item.quantity);
+                                        }}
+                                      >
+                                        <i className="bi bi-pencil"></i>
+                                      </Button>
+                                      <Button
+                                        className="custom-button-secondary"
+                                        onClick={() => {
+                                          setShowDeleteModal(true);
+                                          setDeleteItem(item.product.name);
+                                        }}
+                                      >
+                                        <i className="bi bi-trash"></i>
+                                      </Button>
+                                    </Col>
+                                  </Row>
+                                </Card.Footer>
+                              </Card>
+                            </Container>
+                          </>
+                        ))}
+                    </Card>
+                  ))
+                )}
               </>
             )}
           </Col>

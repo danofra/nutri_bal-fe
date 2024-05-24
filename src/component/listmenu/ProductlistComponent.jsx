@@ -34,7 +34,9 @@ const ProductlistComponent = () => {
         <div>
           <h2 className="text-center mt-3">{category}</h2>
           {isLoading ? (
-            <Spinner animation="border" role="status"></Spinner>
+            <div className="d-flex justify-content-center align-items-center">
+              <Spinner animation="border" className="spinner" />
+            </div>
           ) : (
             <>
               <Container fluid>
@@ -51,7 +53,11 @@ const ProductlistComponent = () => {
                           style={{ width: "18rem" }}
                           className=" background-food"
                         >
-                          <Card.Img variant="top" src={product.image} />
+                          <Card.Img
+                            variant="top"
+                            src={product.image}
+                            height={250}
+                          />
                           <Card.Body>
                             <Card.Title className="text-center m-0 p-0">
                               {product.name}

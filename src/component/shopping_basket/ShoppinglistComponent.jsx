@@ -177,55 +177,60 @@ function ShoppinglistComponent() {
             </Button>
           </Col>
         </Row>
-        <Row className="mt-3" style={{ height: "400px", overflowY: "scroll" }}>
+        <Row className="mt-3">
           <h3 className="text-center">Lista della spesa</h3>
-          {isLoading ? (
-            <div className="d-flex justify-content-center align-items-center">
-              <Spinner animation="border" className="spinner" />
-            </div>
-          ) : items && items.length > 0 ? (
-            items.map((item, index) => (
-              <Row key={index} className="border-bottom border-2 ">
-                <Col className="col-4 d-flex justify-content-start align-items-center">
-                  <Form.Check
-                    type="checkbox"
-                    label={item.product.name}
-                    checked={item.checked}
-                    className="custom-checkbox"
-                    onChange={() => handleToggleItem(index)}
-                  />
-                </Col>
-                <Col className="col-5 d-flex justify-content-end align-items-center">
-                  Quantità: {item.quantity}
-                </Col>
-                <Col className=" col-3 d-flex justify-content-end align-items-center">
-                  <Button
-                    className="me-2 ms-4 mb-2 custom-button-primary"
-                    onClick={() => {
-                      setShowPatchModal(true);
-                      setNewEditName(item.product.name);
-                      setNewEditQuantity(item.quantity);
-                    }}
-                  >
-                    <i className="bi bi-pencil"></i>
-                  </Button>
-                  <Button
-                    className="me-2 ms-4 mb-2 custom-button-secondary"
-                    onClick={() => {
-                      setShowDeleteModal(true);
-                      setDeleteItem(item.product.name);
-                    }}
-                  >
-                    <i className="bi bi-trash"></i>
-                  </Button>
-                </Col>
-              </Row>
-            ))
-          ) : (
-            <div className="text-center">
-              <p>Nessun prodotto nella lista della spesa</p>
-            </div>
-          )}
+          <Col style={{ height: "400px", overflowY: "scroll" }}>
+            {isLoading ? (
+              <div className="d-flex justify-content-center align-items-center">
+                <Spinner animation="border" className="spinner" />
+              </div>
+            ) : items && items.length > 0 ? (
+              items.map((item, index) => (
+                <Row
+                  key={index}
+                  className="border-bottom border-2 mt-3 align-items-center "
+                >
+                  <Col className="d-flex justify-content-start align-items-center">
+                    <Form.Check
+                      type="checkbox"
+                      label={item.product.name}
+                      checked={item.checked}
+                      className="custom-checkbox"
+                      onChange={() => handleToggleItem(index)}
+                    />
+                  </Col>
+                  <Col className="d-flex justify-content-start align-items-center">
+                    Quantità: {item.quantity}
+                  </Col>
+                  <Col className="d-flex justify-content-end align-items-center">
+                    <Button
+                      className="me-1 ms-4 mb-2 custom-button-primary"
+                      onClick={() => {
+                        setShowPatchModal(true);
+                        setNewEditName(item.product.name);
+                        setNewEditQuantity(item.quantity);
+                      }}
+                    >
+                      <i className="bi bi-pencil"></i>
+                    </Button>
+                    <Button
+                      className="me-2 ms-1 mb-2 custom-button-secondary"
+                      onClick={() => {
+                        setShowDeleteModal(true);
+                        setDeleteItem(item.product.name);
+                      }}
+                    >
+                      <i className="bi bi-trash"></i>
+                    </Button>
+                  </Col>
+                </Row>
+              ))
+            ) : (
+              <div className="text-center">
+                <p>Nessun prodotto nella lista della spesa</p>
+              </div>
+            )}
+          </Col>
         </Row>
         <Row className=" text-center mt-3">
           <Col>
