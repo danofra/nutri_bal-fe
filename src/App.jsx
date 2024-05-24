@@ -20,6 +20,7 @@ import CalendarComponent from "./component/calendar/CalendarComponent.jsx";
 import FoodpyramidComponent from "./component/listmenu/FoodpyramidComponent.jsx";
 import LoginComponent from "./component/login/LoginComponent.jsx";
 import UserdetailsComponent from "./component/login/UserdetailsComponent.jsx";
+import ProductlistComponent from "./component/listmenu/ProductlistComponent.jsx";
 
 function App() {
   return (
@@ -43,6 +44,10 @@ function App() {
             <Route path="/calendar" element={<CalendarComponent />} />
             <Route path="/foodpyramid" element={<FoodpyramidComponent />} />
             <Route path="/userdetails" element={<UserdetailsComponent />} />
+            <Route
+              path="/category/:category"
+              element={<ProductlistComponent />}
+            />
           </Routes>
         </main>
         <footer></footer>

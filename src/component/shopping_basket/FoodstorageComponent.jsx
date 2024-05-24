@@ -25,27 +25,6 @@ function FoodstorageComponent() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  /* FUNCTION CATEGORY */
-
-  const handleCategoryClick = (category) => {
-    if (selectedCategory === category) {
-      setSelectedCategory(null);
-      setMenuOpen(false);
-    } else {
-      setSelectedCategory(category);
-      setMenuOpen(true);
-    }
-  };
-
-  const groupedItems = items.reduce((acc, item) => {
-    const category = item.product.category;
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(item);
-    return acc;
-  }, {});
-
   /* FETCH GET */
 
   useEffect(() => {
@@ -85,6 +64,27 @@ function FoodstorageComponent() {
       });
     setShowDeleteModal(false);
   };
+
+  /* FUNCTION CATEGORY */
+
+  const handleCategoryClick = (category) => {
+    if (selectedCategory === category) {
+      setSelectedCategory(null);
+      setMenuOpen(false);
+    } else {
+      setSelectedCategory(category);
+      setMenuOpen(true);
+    }
+  };
+
+  const groupedItems = items.reduce((acc, item) => {
+    const category = item.product.category;
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(item);
+    return acc;
+  }, {});
 
   /* CLOSE MODAL */
 
