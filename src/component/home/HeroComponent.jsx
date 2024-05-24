@@ -4,7 +4,7 @@ import logoNutribal from "../../assets/logo-nutri-bal.png";
 function HeroComponet() {
   return (
     <>
-      <Container
+      <Container fluid
         id="custom-img"
         className="d-flex flex-column align-items-center justify-content-center"
       >

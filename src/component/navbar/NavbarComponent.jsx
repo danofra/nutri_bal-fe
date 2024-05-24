@@ -2,18 +2,29 @@ import { Container, Navbar, Offcanvas, Button, Image } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { userDetailsGet } from "../../data/login/userdetails";
+import { productsGet } from "../../data/menu/product";
 
 function NavbarComponent() {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [userData, setUserData] = useState([]);
+  const [productData, setProductData] = useState([]);
   const [showAlimentiSubMenu, setShowAlimentiSubMenu] = useState(false);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    // Fetch user details
     userDetailsGet()
       .then((data) => setUserData(data))
-      .catch((error) => Error(error));
+      .catch((error) => console.error(error));
+
+    // Fetch product data
+    productsGet()
+      .then((data) => {
+        console.log(data.content);
+        setProductData(data.content);
+      })
+      .catch((error) => console.error(error));
   }, []);
 
   const handleShow = () => setShow(true);
@@ -30,6 +41,7 @@ function NavbarComponent() {
       navigate("/userdetails");
     } else {
       navigate("/login");
+      handleClose();
     }
   };
 
@@ -77,26 +89,35 @@ function NavbarComponent() {
                 </div>
                 {showAlimentiSubMenu && (
                   <ul className="submenu mt-2">
-                    <li>
-                      <a href="#frutta" onClick={handleClose}>
-                        Frutta
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#verdura" onClick={handleClose}>
-                        Verdura
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#ortaggi" onClick={handleClose}>
-                        Ortaggi
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#carne" onClick={handleClose}>
-                        Carne
-                      </a>
-                    </li>
+                    {token ? (
+                      productData
+                        .map((product) => product.category)
+                        .filter(
+                          (category, index, self) =>
+                            self.indexOf(category) === index
+                        )
+                        .sort()
+                        .map((category) => (
+                          <li key={category} className="submenu-item">
+                            <Link
+                              to={`/category/${category}`}
+                              onClick={handleClose}
+                            >
+                              {category}
+                            </Link>
+                          </li>
+                        ))
+                    ) : (
+                      <li className="submenu-item text-center">
+                        <p>Accedi per consultare il menù</p>
+                        <Button
+                          className="navbar-brand link-navbar custom-button-primary"
+                          onClick={handleUser}
+                        >
+                          Accedi
+                        </Button>
+                      </li>
+                    )}
                   </ul>
                 )}
                 <hr />
@@ -109,8 +130,8 @@ function NavbarComponent() {
           <Link to="/" className="navbar-brand link-navbar">
             <i className="bi bi-house icon-navbar"></i>
           </Link>
-          <Link to="/shoppingbasket" className="navbar-brand link-navbar ">
-            <i className="bi bi-basket3 icon-navbar "></i>
+          <Link to="/shoppingbasket" className="navbar-brand link-navbar">
+            <i className="bi bi-basket3 icon-navbar"></i>
           </Link>
           {token ? (
             <Image

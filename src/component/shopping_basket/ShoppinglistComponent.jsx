@@ -154,7 +154,7 @@ function ShoppinglistComponent() {
   return (
     <>
       <Container>
-        <Row className="mt-3 flex-column justify-content-center align-items-center">
+        <Row className="mt-3 justify-content-center align-items-center">
           <Col className="d-flex justify-content-center">
             <Form.Control
               type="text"
@@ -172,16 +172,12 @@ function ShoppinglistComponent() {
               value={newItemQuantity}
               onChange={(e) => setNewItemQuantity(parseInt(e.target.value))}
             />
-          </Col>
-        </Row>
-        <Row className="mt-2 justify-content-center align-items-center">
-          <Col className="d-flex justify-content-center">
             <Button className="custom-button-primary" onClick={handleAddItem}>
               Aggiungi
             </Button>
           </Col>
         </Row>
-        <Row className="mt-3" style={{ height: "500px", overflowY: "scroll" }}>
+        <Row className="mt-3" style={{ height: "400px", overflowY: "scroll" }}>
           <h3 className="text-center">Lista della spesa</h3>
           {isLoading ? (
             <div className="d-flex justify-content-center align-items-center">
@@ -189,7 +185,7 @@ function ShoppinglistComponent() {
             </div>
           ) : items && items.length > 0 ? (
             items.map((item, index) => (
-              <Row key={index}>
+              <Row key={index} className="border-bottom border-2 ">
                 <Col className="col-4 d-flex justify-content-start align-items-center">
                   <Form.Check
                     type="checkbox"
@@ -202,7 +198,7 @@ function ShoppinglistComponent() {
                 <Col className="col-5 d-flex justify-content-end align-items-center">
                   Quantità: {item.quantity}
                 </Col>
-                <Col className=" col-3 d-flex flex-column  justify-content-end align-items-center">
+                <Col className=" col-3 d-flex justify-content-end align-items-center">
                   <Button
                     className="me-2 ms-4 mb-2 custom-button-primary"
                     onClick={() => {
@@ -223,12 +219,11 @@ function ShoppinglistComponent() {
                     <i className="bi bi-trash"></i>
                   </Button>
                 </Col>
-                <hr />
               </Row>
             ))
           ) : (
             <div className="text-center">
-              <p>Nessun prodotto nella lista della spesa!</p>
+              <p>Nessun prodotto nella lista della spesa</p>
             </div>
           )}
         </Row>
@@ -239,14 +234,19 @@ function ShoppinglistComponent() {
                 <Spinner animation="border" className="spinner" />
               </div>
             ) : (
-              <Button
-                className="custom-button-primary"
-                onClick={() =>
-                  handleTransferToFoodItem(newItemQuantity, newItemName)
-                }
-              >
-                Trasferisci alla dispensa
-              </Button>
+              <>
+                <p className="font-span mt-2">
+                  Seleziona i prodotti che vuoi trasferire alla dispensa
+                </p>
+                <Button
+                  className="custom-button-primary"
+                  onClick={() =>
+                    handleTransferToFoodItem(newItemQuantity, newItemName)
+                  }
+                >
+                  Trasferisci alla dispensa
+                </Button>
+              </>
             )}
           </Col>
         </Row>

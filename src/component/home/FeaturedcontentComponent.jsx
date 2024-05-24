@@ -1,6 +1,5 @@
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
 const FeaturedcontentComponent = () => {
-  // Esempio di dati per il contenuto in primo piano
   const featuredItems = [
     {
       title: "Cambia la tua vita con il metodo Bilanciamo.",
@@ -35,31 +34,39 @@ const FeaturedcontentComponent = () => {
 
   return (
     <Container
+      fluid
       id="custom-img-featured"
       className="d-flex flex-column align-items-center justify-content-center"
     >
-      <Row className="text-center mt-4 mb-4">
-        <Col className="col-12">
-          <h2>Biblioteca in primo piano</h2>
-        </Col>
-        {featuredItems.map((item, index) => (
-          <Col
-            key={index}
-            className="col-6 mt-4 d-flex flex-column align-items-center justify-content-around"
-          >
-            <Image src={item.image} alt={item.title} width={150} height={150} />
-            <h2 className="pt-3">{item.title}</h2>
-            <p>{item.description}</p>
-            <Button
-              className="custom-button-primary"
-              target="_blank"
-              href={item.link}
-            >
-              Leggi tutto
-            </Button>
+      <Container>
+        <Row className="text-center mt-4 mb-4">
+          <Col className="col-12">
+            <h2>Biblioteca in primo piano</h2>
           </Col>
-        ))}
-      </Row>
+          {featuredItems.map((item, index) => (
+            <Col
+              key={index}
+              className="col-6 mt-4 d-flex flex-column align-items-center justify-content-around"
+            >
+              <Image
+                src={item.image}
+                alt={item.title}
+                width={150}
+                height={150}
+              />
+              <h2 className="pt-3">{item.title}</h2>
+              <p>{item.description}</p>
+              <Button
+                className="custom-button-primary"
+                target="_blank"
+                href={item.link}
+              >
+                Acquista
+              </Button>
+            </Col>
+          ))}
+        </Row>
+      </Container>
     </Container>
   );
 };
