@@ -1,4 +1,5 @@
 const token = localStorage.getItem("token");
+import { baseURL } from "./login";
 export const newMealsPost = (
   productName,
   quantity,
@@ -8,7 +9,7 @@ export const newMealsPost = (
   month,
   year
 ) => {
-  return fetch("http://localhost:3001/mealsquantity/me", {
+  return fetch(baseURL + "mealsquantity/me", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -47,16 +48,13 @@ export const newMealsPost = (
 };
 
 export const mealsGet = (month, year) => {
-  return fetch(
-    `http://localhost:3001/mealsquantity/me?month=${month}&year=${year}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  )
+  return fetch(baseURL + `mealsquantity/me?month=${month}&year=${year}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
     .then((response) => {
       if (!response.ok) {
         throw new Error("Error during the loading of the meals!");
@@ -71,7 +69,8 @@ export const mealsGet = (month, year) => {
 
 export const mealsPut = (mealsQuantityId, quantity, unitOfMeasure) => {
   return fetch(
-    `http://localhost:3001/mealsquantity/me/${mealsQuantityId}?quantity=${quantity}&unitOfMeasure=${unitOfMeasure}`,
+    baseURL +
+      `mealsquantity/me/${mealsQuantityId}?quantity=${quantity}&unitOfMeasure=${unitOfMeasure}`,
     {
       method: "PUT",
       headers: {
@@ -93,7 +92,7 @@ export const mealsPut = (mealsQuantityId, quantity, unitOfMeasure) => {
 };
 
 export const mealsDelete = (mealsQuantityId) => {
-  return fetch(`http://localhost:3001/mealsquantity/me/${mealsQuantityId}`, {
+  return fetch(baseURL + `mealsquantity/me/${mealsQuantityId}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,

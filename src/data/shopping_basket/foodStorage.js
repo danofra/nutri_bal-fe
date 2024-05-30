@@ -1,4 +1,5 @@
 const token = localStorage.getItem("token");
+import { baseURL } from "./login";
 export const newFoodStoragePost = (token) => {
   if (token && token.includes(".")) {
     const headers = {
@@ -6,7 +7,7 @@ export const newFoodStoragePost = (token) => {
       "Content-Type": "application/json",
     };
 
-    return fetch("http://localhost:3001/foodstorage/me", {
+    return fetch(baseURL + "foodstorage/me", {
       method: "POST",
       headers,
     })
@@ -26,7 +27,7 @@ export const newFoodStoragePost = (token) => {
 };
 
 export const foodStorageGet = () => {
-  return fetch("http://localhost:3001/foodstoragequantity/me", {
+  return fetch(baseURL + "foodstoragequantity/me", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -47,7 +48,7 @@ export const foodStorageGet = () => {
 
 export const foodStoragePut = (quantity, productName) => {
   return fetch(
-    `http://localhost:3001/foodstoragequantity/me/${productName}?quantity=${quantity}`,
+    baseURL + `foodstoragequantity/me/${productName}?quantity=${quantity}`,
     {
       method: "PUT",
       headers: {
@@ -70,7 +71,7 @@ export const foodStoragePut = (quantity, productName) => {
 
 export const foodStorageDelete = (productName) => {
   return fetch(
-    `http://localhost:3001/foodstoragequantity/me?productName=${productName}`,
+    baseURL + `foodstoragequantity/me?productName=${productName}`,
     {
       method: "DELETE",
       headers: {

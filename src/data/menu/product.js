@@ -1,6 +1,7 @@
 const token = localStorage.getItem("token");
+import { baseURL } from "./login";
 export const productsGet = () => {
-  return fetch(`http://localhost:3001/product`, {
+  return fetch(baseURL + `product`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,

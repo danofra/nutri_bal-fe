@@ -1,8 +1,10 @@
 import { newGroceryShoppingPost } from "../shopping_basket/shoppinglist";
 import { newFoodStoragePost } from "../shopping_basket/foodStorage";
 
+export const baseURL = "https://nutribal-dano-9db32027.koyeb.app/";
+
 export const login = (email, password) => {
-  return fetch("http://localhost:3001/auth/login", {
+  return fetch(baseURL + "auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
