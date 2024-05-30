@@ -1,3 +1,4 @@
+import { baseURL } from "./login";
 export const singin = (
   name,
   surname,
@@ -10,7 +11,7 @@ export const singin = (
   city_of_residence,
   robot
 ) => {
-  return fetch("http://localhost:3001/auth/register", {
+  return fetch(baseURL + "auth/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

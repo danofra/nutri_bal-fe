@@ -1,6 +1,7 @@
 const token = localStorage.getItem("token");
+import { baseURL } from "./login";
 export const userDetailsGet = () => {
-  return fetch("http://localhost:3001/user/me", {
+  return fetch(baseURL + "user/me", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -44,7 +45,7 @@ export const userDetailsPut = (
   if (password) {
     userDataObject.password = password;
   }
-  return fetch("http://localhost:3001/user/me", {
+  return fetch(baseURL + "user/me", {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -65,7 +66,7 @@ export const userDetailsPut = (
 };
 
 export const userDetailsDelete = () => {
-  return fetch("http://localhost:3001/user/me", {
+  return fetch(baseURL + "user/me", {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -85,7 +86,7 @@ export const userDetailsDelete = () => {
 };
 
 export const userDetailsUploadImage = (formData) => {
-  return fetch("http://localhost:3001/user/me/upload", {
+  return fetch(baseURL + "user/me/upload", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

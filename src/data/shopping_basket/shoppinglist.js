@@ -1,4 +1,5 @@
 const token = localStorage.getItem("token");
+import { baseURL } from "./login";
 
 export const newGroceryShoppingPost = (token) => {
   if (token && token.includes(".")) {
@@ -7,7 +8,7 @@ export const newGroceryShoppingPost = (token) => {
       "Content-Type": "application/json",
     };
 
-    return fetch("http://localhost:3001/groceryshopping/me", {
+    return fetch(baseURL + "groceryshopping/me", {
       method: "POST",
       headers,
     })
@@ -29,7 +30,7 @@ export const newGroceryShoppingPost = (token) => {
 };
 
 export const groceryShoppingGet = () => {
-  return fetch("http://localhost:3001/groceryshoppingquantity/me", {
+  return fetch(baseURL + "groceryshoppingquantity/me", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -50,7 +51,8 @@ export const groceryShoppingGet = () => {
 
 export const groceryShoppingPost = (quantity, productName) => {
   return fetch(
-    `http://localhost:3001/groceryshoppingquantity/me?quantity=${quantity}&productName=${productName}`,
+    baseURL +
+      `groceryshoppingquantity/me?quantity=${quantity}&productName=${productName}`,
     {
       method: "POST",
       headers: {
@@ -73,7 +75,7 @@ export const groceryShoppingPost = (quantity, productName) => {
 
 export const groceryShoppingPut = (quantity, productName) => {
   return fetch(
-    `http://localhost:3001/groceryshoppingquantity/me/${productName}?quantity=${quantity}`,
+    baseURL + `groceryshoppingquantity/me/${productName}?quantity=${quantity}`,
     {
       method: "PUT",
       headers: {
@@ -96,7 +98,7 @@ export const groceryShoppingPut = (quantity, productName) => {
 
 export const groceryShoppingDelete = (productName) => {
   return fetch(
-    `http://localhost:3001/groceryshoppingquantity/me?productName=${productName}`,
+    baseURL + `groceryshoppingquantity/me?productName=${productName}`,
     {
       method: "DELETE",
       headers: {
@@ -119,7 +121,8 @@ export const groceryShoppingDelete = (productName) => {
 
 export const foodStoragePost = (quantity, productName) => {
   return fetch(
-    `http://localhost:3001/foodstoragequantity/me?quantity=${quantity}&productName=${productName}`,
+    baseURL +
+      `foodstoragequantity/me?quantity=${quantity}&productName=${productName}`,
     {
       method: "POST",
       headers: {
