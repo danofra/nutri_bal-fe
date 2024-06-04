@@ -11,7 +11,6 @@ import {
 import { singin } from "../../data/login/singin";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-/* import LoginComponent from "./LoginComponent"; */
 
 function SinginComponent() {
   const initialState = {

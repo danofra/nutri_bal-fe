@@ -139,9 +139,9 @@ function NavbarComponent() {
                 {showRicettarioSubMenu && (
                   <ul className="submenu mt-2 ">
                     <li>
-                      <a href="#aggiungi" onClick={handleClose}>
+                      <Link to="/addrecipies" onClick={handleClose}>
                         Nuova Ricetta
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <a href="#ricettario" onClick={handleClose}>

@@ -21,6 +21,7 @@ import FoodpyramidComponent from "./component/listmenu/FoodpyramidComponent.jsx"
 import LoginComponent from "./component/login/LoginComponent.jsx";
 import UserdetailsComponent from "./component/login/UserdetailsComponent.jsx";
 import ProductlistComponent from "./component/listmenu/ProductlistComponent.jsx";
+import AddRecipesComponent from "./component/recipes/AddRecipesComponent.jsx";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
               path="/category/:category"
               element={<ProductlistComponent />}
             />
+            <Route path="/addrecipies" element={<AddRecipesComponent />} />
           </Routes>
         </main>
         <footer></footer>
