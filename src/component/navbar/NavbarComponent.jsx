@@ -10,6 +10,7 @@ function NavbarComponent() {
   const [userData, setUserData] = useState([]);
   const [productData, setProductData] = useState([]);
   const [showAlimentiSubMenu, setShowAlimentiSubMenu] = useState(false);
+  const [showRicettarioSubMenu, setShowRicettarioSubMenu] = useState(false);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -30,6 +31,11 @@ function NavbarComponent() {
   };
   const handleToggleAlimentiSubMenu = () => {
     setShowAlimentiSubMenu(!showAlimentiSubMenu);
+    setShowRicettarioSubMenu(false);
+  };
+  const handleToggleRicettarioSubMenu = () => {
+    setShowRicettarioSubMenu(!showRicettarioSubMenu);
+    setShowAlimentiSubMenu(false);
   };
 
   const handleUser = () => {
@@ -117,6 +123,33 @@ function NavbarComponent() {
                   </ul>
                 )}
                 <hr />
+                <div
+                  className="menu-item"
+                  onClick={handleToggleRicettarioSubMenu}
+                >
+                  <span>Ricettario</span>
+                  <i
+                    className={
+                      showRicettarioSubMenu
+                        ? "bi bi-caret-down-fill"
+                        : "bi bi-caret-right-fill"
+                    }
+                  ></i>
+                </div>
+                {showRicettarioSubMenu && (
+                  <ul className="submenu mt-2 ">
+                    <li>
+                      <a href="#aggiungi" onClick={handleClose}>
+                        Nuova Ricetta
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#ricettario" onClick={handleClose}>
+                        Il mio Ricettario
+                      </a>
+                    </li>
+                  </ul>
+                )}
               </div>
             </Offcanvas.Body>
           </Offcanvas>
